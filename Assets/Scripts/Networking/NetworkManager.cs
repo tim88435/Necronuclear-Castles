@@ -86,14 +86,22 @@ public class NetworkManager : MonoBehaviour
     private void Awake()
     {
         //when this script is made, set the instance ot this
+        RiptideLogger.Initialize(Debug.Log, Debug.Log, Debug.LogWarning, Debug.LogError, false);
         Singleton = this;
         DontDestroyOnLoad(gameObject);
     }
     public void Start()
     {
-        //Logs what the network is doing
-        RiptideLogger.Initialize(Debug.Log, Debug.Log, Debug.LogWarning, Debug.LogError, false);
-        CheckClient();
+        if (IsHost)
+        {
+            if (GameManager.CurrentGameState == GameManager.GameState.MainGame)
+            {
+                foreach (Connection item in Server.Clients)
+                {
+                    
+                }
+            }
+        }
     }
     /// <summary>
     /// Call this when you start a lobby that players can connect to
@@ -105,6 +113,7 @@ public class NetworkManager : MonoBehaviour
         Server.Start(s_port, s_maxClientCount);
         //when a client leaves the server, run the PlayerLeftFunction
         Server.ClientDisconnected += PlayerLeft;
+        Server.ClientConnected += Connected;
         IsHost = true;
     }
     /// <summary>
@@ -121,27 +130,34 @@ public class NetworkManager : MonoBehaviour
     }
     private void CheckClient()
     {
+        if (IsHost)
+        {
+            return;
+        }
         if (Client == null)
         {
             Client = new Client();
             //Connect
             Client.Connected += Connected;
             //ConnectionFailed
-            Client.ConnectionFailed += Failed;
+            //Client.ConnectionFailed += Failed;
             //Disconnect
             Client.Disconnected += Disconnected;
             Client.ClientDisconnected += PlayerLeft;
             ServerTick = 2;
         }
     }
-    private void Failed(object sender, ConnectionFailedEventArgs e)//Client for when connection failed to establish
+    /*private void Failed(object sender, ConnectionFailedEventArgs e)//Client for when connection failed to establish
     {
         //Bring back to main Menu
-    }
+    }*/
 
     private void Connected(object sender, EventArgs eventArgs)//Client for when connection established
     {
-        CheckClient();
+        if (Server.ClientCount == Server.MaxClientCount)
+        {
+            GameManager.Singleton.ChangeScene(1);
+        }
         //UIManager.UIManagerInstance.SendName();
     }
 

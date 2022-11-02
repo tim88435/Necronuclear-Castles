@@ -28,8 +28,6 @@ public class GameManager : MonoBehaviour
     {
         MainMenu,
         MainGame,
-        PauseMenu,
-        Lobby,
     }
     public static GameState CurrentGameState = GameState.MainMenu;
     [SerializeField] private GameObject _localPlayerPrefab;
@@ -81,6 +79,6 @@ public class GameManager : MonoBehaviour
     private void StartGame()
     {
         //Change name and position
-        Player.Spawn(0, "Host");
+        //Player.Spawn(0, "Host");
     }
 }

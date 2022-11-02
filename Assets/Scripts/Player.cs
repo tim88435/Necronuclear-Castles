@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public Vector2 joystick1;//last input from client
     public Vector2 joystick2;//last input from client
     public bool[] inputs = new bool[3];//last inputs from client
-    public static void Spawn(ushort identification, string username, Vector3 position)
+    public static void Spawn(ushort identification, string username, Vector3 position)//for each client when a new client joins
     {
         Player Player;
         if (identification == NetworkManager.Singleton.Client.Id)
@@ -32,18 +32,18 @@ public class Player : MonoBehaviour
         Player.Identification = identification;
         listOfPlayers.Add(identification, Player);
     }
-    public static void Spawn(ushort identification, string username)
+    public static void Spawn(ushort identification, string username)//server adding a new client
     {
         foreach (Player otherPlayer in listOfPlayers.Values)
-        {
+        {//send info on all other players to the new player
             otherPlayer.SendSpawned(identification);
         }
         Player Player = Instantiate(GameManager.Singleton.playerPrefab, Vector3.up, Quaternion.identity).GetComponent<Player>();
         Player.name = $"Player {identification}({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
         Player.Identification = identification;
         Player.username = string.IsNullOrEmpty(username) ? "Guest" : username;
-        Player.SendSpawned();
-        listOfPlayers.Add(identification, Player);
+        Player.SendSpawned();//send info on new player to all other players
+        listOfPlayers.Add(identification, Player);//ony then add the new player
     }
     private void SendSpawned()
     {
