@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92bc3cd3e9604b447bf63f42bf5baa58, type: 3}
+  m_Name: Milkman
+  m_EditorClassIdentifier: 
+  cardFace: {fileID: 21300000, guid: df84b3b4f46424f4dadc0aa28f081fb3, type: 3}
+  lockedFace: {fileID: 21300000, guid: 7b2163bd6cdb4004b95e8526100a9568, type: 3}
+  winsNeeded: 1
+  unlock: {fileID: 318563858683511804, guid: 46f91fcda7bdfc444aa5f668d3ee6fbb, type: 3}
