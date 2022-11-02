@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 92bc3cd3e9604b447bf63f42bf5baa58, type: 3}
-  m_Name: Always unlocked
+  m_Name: Always unlocked 1
   m_EditorClassIdentifier: 
   cardFace: {fileID: 21300000, guid: 7570c34fe603c784a8a1fd0a2393c22b, type: 3}
   lockedFace: {fileID: 21300000, guid: eb2d82163c103cd489a8db1b4278e9bb, type: 3}
   winsNeeded: 0
-  unlock: {fileID: 535584957044824971, guid: ca203c6db9480b7448a1774955333ddb, type: 3}
+  unlock: FF0000

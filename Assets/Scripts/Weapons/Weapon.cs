@@ -10,6 +10,6 @@ public class Weapon : ScriptableObject
     public float length;//weapon length
 
     public GameObject model;//weapon model
-    public GameObject image;//weapon image in the player UI
+    public Sprite image;//weapon image in the player UI
     public string weaponName;//name of the weapon, to be displayed in the UI
 }

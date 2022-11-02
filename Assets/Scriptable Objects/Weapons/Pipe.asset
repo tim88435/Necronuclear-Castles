@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8422294e7971864a8de835c3b8a49e6, type: 3}
-  m_Name: Fist
+  m_Name: Pipe
   m_EditorClassIdentifier: 
-  damage: 1
-  cooldown: 1
-  length: 1
-  model: {fileID: 8981372808772923595, guid: 8e267f2976730374e902268fd4302f51, type: 3}
-  image: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  weaponName: Bare hands
+  damage: 2
+  cooldown: 2
+  length: 2
+  model: {fileID: 5929074025857247027, guid: 8f1507400e160b547bc20c999d2791e4, type: 3}
+  image: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  weaponName: Pipe

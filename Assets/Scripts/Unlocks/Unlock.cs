@@ -25,6 +25,6 @@ public class Unlock : MonoBehaviour
 
     public void SelectCostume()
     {
-        UIManager.Singleton._playerModel = card.unlock;//replaces player model with model on the card
+        UIManager.Singleton._playerSkin = card.unlock;//replaces player model with model on the card
     }
 }

@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &66170143 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7327080685653002915, guid: d153531df216cf74ba36cd14f39ff498, type: 3}
+  m_PrefabInstance: {fileID: 7327080685487530522}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &136225050
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,8 +543,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d8b5dae1132dac4995c46ecc52b3d3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cameraTransform: {fileID: 0}
+  cameraTransform: {fileID: 0}
   _interpolator: {fileID: 0}
+  joystick1: {x: 0, y: 0}
+  joystick2: {x: 0, y: 0}
+  inputs: 000000
 --- !u!135 &874388899
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -623,6 +631,18 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7327080685653002912, guid: d153531df216cf74ba36cd14f39ff498, type: 3}
   m_PrefabInstance: {fileID: 7327080685487530522}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1071982779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 66170143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d2cfe348e50f9439cd1d705dc5a0ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7327080685487530522
 PrefabInstance:
   m_ObjectHideFlags: 0
