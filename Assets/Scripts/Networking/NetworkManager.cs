@@ -17,8 +17,8 @@ public enum ClientToServerId : ushort//this will contain all the ids for message
 }
 public class NetworkManager : MonoBehaviour
 {
-    private static NetworkManager _singleton;
-    public static NetworkManager Singleton
+    private static NetworkManager _singleton;//Guys you know this
+    public static NetworkManager Singleton//Guys you know this
     {
         //Property Read is public by default and reads the instance
         get => _singleton;
@@ -38,7 +38,7 @@ public class NetworkManager : MonoBehaviour
         }
     }
     private static bool _isHost;
-    public static bool IsHost { get; private set; }
+    public static bool IsHost { get; private set; }//is this computer hosting the server
     public Server Server { get; private set; }//Sever
     public Client Client { get; private set; }//Client
     public ushort CurrentTick { get; private set; } = 0;//Server
@@ -63,8 +63,24 @@ public class NetworkManager : MonoBehaviour
             InterpolationTick = (ushort)(_serverTick - value);
         }*/
     }
-    [SerializeField] private ushort s_port;//Both
+    [SerializeField] private ushort s_port;//Both 
+    public ushort ServerPort
+    {
+        get => s_port;
+        set
+        {
+            s_port = value;
+        }
+    }
     [SerializeField] private string s_InternetProtocol;//Client
+    public string ServerInternetProtocol
+    {
+        get => s_InternetProtocol;
+        set
+        {
+            s_InternetProtocol = value;
+        }
+    }
     [SerializeField] private ushort tickDivergenceTolerance = 1;//Client
     [SerializeField] private ushort s_maxClientCount;//Server
     private void Awake()
@@ -79,6 +95,9 @@ public class NetworkManager : MonoBehaviour
         RiptideLogger.Initialize(Debug.Log, Debug.Log, Debug.LogWarning, Debug.LogError, false);
         CheckClient();
     }
+    /// <summary>
+    /// Call this when you start a lobby that players can connect to
+    /// </summary>
     public void StartServer()
     {
         //create new server at port XXXX with X amount of clients
@@ -88,6 +107,9 @@ public class NetworkManager : MonoBehaviour
         Server.ClientDisconnected += PlayerLeft;
         IsHost = true;
     }
+    /// <summary>
+    /// Call when you want to close the server lobby
+    /// </summary>
     public void CloseServer()
     {
         Server.Stop();
@@ -129,15 +151,29 @@ public class NetworkManager : MonoBehaviour
     }
 
     //Checking Server Activity
-    public void ServerFixedUpdate()//Server
+    public void FixedUpdate()//Server
     {
-        Server.Update();
-        if (CurrentTick % 250 == 0)
+        if (IsHost)
         {
-            SendTick();
+            Server.Update();
+            if (CurrentTick % 250 == 0)
+            {
+                SendTick();
+            }
+            CurrentTick++;
         }
-        CurrentTick++;
+        else
+        {
+            if (Client != null)
+            {
+                Client.Update();
+                ServerTick++;
+            }
+        }
     }
+    /// <summary>
+    /// Called when a player has left
+    /// </summary>
     public void PlayerLeft(object sender, ClientDisconnectedEventArgs eventArgs)//Client
     {
         //when the player leaves the server destroy the player object and remove from list
@@ -146,6 +182,9 @@ public class NetworkManager : MonoBehaviour
             GameObject.Destroy(player.gameObject);
         }
     }
+    /// <summary>
+    /// Called when a player has left
+    /// </summary>
     public void PlayerLeft(object sender, ServerDisconnectedEventArgs eventArgs)//Server
     {
         //when the player leaves the server destroy the player object and remove from list
@@ -154,12 +193,19 @@ public class NetworkManager : MonoBehaviour
             GameObject.Destroy(player.gameObject);
         }
     }
+    /// <summary>
+    /// Send the current tick of ther server to all the clients
+    /// </summary>
     private void SendTick()//Server
     {
         Message message = Message.Create(MessageSendMode.Unreliable, (ushort)ServerToClientId.sync);
         message.AddUShort(CurrentTick);
         Server.SendToAll(message);
     }
+    /// <summary>
+    /// Client listener to set the current tick
+    /// </summary>
+    /// <param name="serverTick"></param>
     private void SetTick(ushort serverTick)//Client
     {
         if (Mathf.Abs(ServerTick - serverTick) > tickDivergenceTolerance)
@@ -168,13 +214,28 @@ public class NetworkManager : MonoBehaviour
             ServerTick = serverTick;
         }
     }
+    /// <summary>
+    /// Client listener to revieve the current tick
+    /// </summary>
     [MessageHandler((ushort)ServerToClientId.sync)]
     public static void Sync(Message message)//Client
     {
         Singleton.SetTick(message.GetUShort());
     }
+    /// <summary>
+    /// Call to connect to a server
+    /// </summary>
     public void Connect()//Server
     {
+        CheckClient();
         Client.Connect($"{s_InternetProtocol}:{s_port}");
+    }
+    private void OnDestroy()
+    {
+        Server.Stop();
+    }
+    private void OnApplicationQuit()
+    {
+        Server.Stop();
     }
 }
