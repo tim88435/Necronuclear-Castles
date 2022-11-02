@@ -28,8 +28,6 @@ public class GameManager : MonoBehaviour
     {
         MainMenu,
         MainGame,
-        PauseMenu,
-        Lobby,
     }
     public static GameState CurrentGameState = GameState.MainMenu;
     [SerializeField] private GameObject _localPlayerPrefab;
