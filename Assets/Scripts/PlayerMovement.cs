@@ -8,7 +8,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _blockSpeed;
-    private bool[] inputs = new bool[3];
     private void OnValidate()
     {
         if (_characterController == null)
@@ -22,25 +21,25 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        //if client
-        Vector2 joystick1 = Vector2.zero;//Dez these are the inputs
-        Vector2 joystick2 = Vector2.zero;//Dez these are the inputs
-        //inputDirection from joysticks
-        //inputs[4] = is blocking
-
-        //if server
-        Move(joystick1, joystick2, inputs);
+        if (NetworkManager.IsHost)
+        {
+            Move(_player.joystick1, _player.joystick2, _player.inputs);
+        }
+        else
+        {
+            SendInputs();
+        }
     }
-    private void Move(Vector2 inputDirection1, Vector2 inputDirection2, bool[] block)
+    private void Move(Vector2 inputDirection1, Vector2 inputDirection2, bool[] inputs)
     {
-        Vector2 moveDirection = inputDirection1;
+        Vector2 moveDirection = inputDirection1 + inputDirection2;
         //block stuff idk @Dez
-        _characterController.Move(inputDirection1);
+        _characterController.Move(moveDirection);
         SendMovement();
     }
     public void SetInput(bool[] inputs, Vector3 forward)
     {
-        this.inputs = inputs;
+        _player.inputs = inputs;
         transform.forward = forward;
     }
     public void SendMovement()
@@ -59,8 +58,17 @@ public class PlayerMovement : MonoBehaviour
     private void SendInputs()
     {
         Message message = Message.Create(MessageSendMode.Unreliable, ClientToServerId.inputs);
-        message.AddBools(inputs, false);
-        message.AddVector3(transform.forward);
+        message.AddBools(_player.inputs, false);//buttons
+        message.AddVector3(Vector3.zero);//joystick 1
+        message.AddVector3(Vector3.zero);//joystick 2
         NetworkManager.Singleton.Client.Send(message);
+    }
+    [MessageHandler((ushort)ClientToServerId.inputs)]
+    private static void GetInputs(ushort fromClientIdentification, Message message)
+    {
+        if (Player.listOfPlayers.TryGetValue(fromClientIdentification, out Player player))
+        {
+            player.SetInputs(message.GetBools(3), message.GetVector3(), message.GetVector3());
+        }
     }
 }

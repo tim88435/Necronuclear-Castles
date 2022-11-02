@@ -31,14 +31,32 @@ public class GameManager : MonoBehaviour
         PauseMenu,
         Lobby,
     }
-    public static GameState CurrentGameState { get; private set; } = GameState.MainMenu;
+    public static GameState CurrentGameState = GameState.MainMenu;
     [SerializeField] private GameObject _localPlayerPrefab;
-    public GameObject LocalPlayerPrefab => _localPlayerPrefab;
+    public GameObject LocalPlayerPrefab { get; set; }
     [SerializeField] private GameObject _playerPrefab;
     public GameObject playerPrefab => _playerPrefab;
     public void ChangeScene(int sceneNumber)
     {
-        CurrentGameState = GameState.MainMenu;
+        switch (sceneNumber)
+        {
+            case 0://Main Menu
+                CurrentGameState = GameState.MainMenu;
+                SceneManager.LoadScene(0);
+                break;
+            case 1://Main Game
+                CurrentGameState = GameState.MainGame;
+                SceneManager.LoadScene(1);
+                break;
+            case 2://Test scene
+                CurrentGameState = GameState.MainGame;
+                NetworkManager.Singleton.StartServer();
+                SceneManager.LoadScene(2);
+                break;
+            default:
+                SceneManager.LoadScene(sceneNumber);
+                break;
+        }
     }
     public void QuitGame()
     {
@@ -47,14 +65,22 @@ public class GameManager : MonoBehaviour
         UnityEditor.EditorApplication.ExitPlaymode();
 #endif
     }
-    private void OnValidate()
+    private void Awake()
     {
         Singleton = this;
+        DontDestroyOnLoad(gameObject);
     }
     private void Start()
     {
-        DontDestroyOnLoad(gameObject);
         Singleton = this;
+        if (CurrentGameState == GameState.MainGame)
+        {
+            StartGame();
+        }
     }
-
+    private void StartGame()
+    {
+        //Change name and position
+        Player.Spawn(0, "Host");
+    }
 }

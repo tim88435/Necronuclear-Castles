@@ -9,8 +9,11 @@ public class Player : MonoBehaviour
     public ushort Identification { get; private set; }
     private string username;
     public bool isLocal { get; private set; }
-    [SerializeField] private Transform _cameraTransform;
+    public Transform cameraTransform;
     [SerializeField] private Interpolator _interpolator;
+    public Vector2 joystick1;//last input from client
+    public Vector2 joystick2;//last input from client
+    public bool[] inputs = new bool[3];//last inputs from client
     public static void Spawn(ushort identification, string username, Vector3 position)
     {
         Player Player;
@@ -29,9 +32,42 @@ public class Player : MonoBehaviour
         Player.Identification = identification;
         listOfPlayers.Add(identification, Player);
     }
+    public static void Spawn(ushort identification, string username)
+    {
+        foreach (Player otherPlayer in listOfPlayers.Values)
+        {
+            otherPlayer.SendSpawned(identification);
+        }
+        Player Player = Instantiate(GameManager.Singleton.playerPrefab, Vector3.up, Quaternion.identity).GetComponent<Player>();
+        Player.name = $"Player {identification}({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
+        Player.Identification = identification;
+        Player.username = string.IsNullOrEmpty(username) ? "Guest" : username;
+        Player.SendSpawned();
+        listOfPlayers.Add(identification, Player);
+    }
+    private void SendSpawned()
+    {
+        NetworkManager.Singleton.Server.SendToAll(AddSpawnData(Message.Create(MessageSendMode.Reliable, (ushort)ServerToClientId.playerSpawned)));
+    }
+    private void SendSpawned(ushort toClientID)
+    {
+        NetworkManager.Singleton.Server.Send(AddSpawnData(Message.Create(MessageSendMode.Reliable, (ushort)ServerToClientId.playerSpawned)), toClientID);
+    }
+    private Message AddSpawnData(Message message)
+    {
+        message.AddUShort(Identification);
+        message.AddString(username);
+        message.AddVector3(transform.position);
+        return message;
+    }
     private void OnDestroy()
     {
         listOfPlayers.Remove(Identification);
+    }
+    [MessageHandler((ushort)ClientToServerId.name)]
+    private static void Name(ushort fromClientIdentification, Message message)
+    {
+        Spawn(fromClientIdentification, message.GetString());
     }
     [MessageHandler((ushort)ServerToClientId.playerSpawned)]
     private static void SpawnPlayer(Message message)
@@ -44,7 +80,7 @@ public class Player : MonoBehaviour
         _interpolator.NewUpdate(tick, newPosition);
         if (!isLocal)
         {
-            _cameraTransform.forward = forward;
+            cameraTransform.forward = forward;
         }
     }
     [MessageHandler((ushort)ServerToClientId.playerPosition)]
@@ -54,5 +90,11 @@ public class Player : MonoBehaviour
         {
             player.Move(message.GetUShort(), message.GetVector3(), message.GetVector3());
         }
+    }
+    public void SetInputs(bool[] inputs, Vector3 joystick1, Vector3 joystick2)
+    {
+        this.inputs = inputs;
+        this.joystick1 = joystick1;
+        this.joystick2 = joystick2;
     }
 }

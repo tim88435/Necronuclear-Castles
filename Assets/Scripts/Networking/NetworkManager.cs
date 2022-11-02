@@ -37,6 +37,8 @@ public class NetworkManager : MonoBehaviour
             }
         }
     }
+    private static bool _isHost;
+    public static bool IsHost { get; private set; }
     public Server Server { get; private set; }//Sever
     public Client Client { get; private set; }//Client
     public ushort CurrentTick { get; private set; } = 0;//Server
@@ -84,10 +86,16 @@ public class NetworkManager : MonoBehaviour
         Server.Start(s_port, s_maxClientCount);
         //when a client leaves the server, run the PlayerLeftFunction
         Server.ClientDisconnected += PlayerLeft;
+        IsHost = true;
+    }
+    public void CloseServer()
+    {
+        Server.Stop();
+        IsHost = false;
     }
     public void StartClient()
     {
-
+        CheckClient();
     }
     private void CheckClient()
     {
@@ -124,7 +132,7 @@ public class NetworkManager : MonoBehaviour
     public void ServerFixedUpdate()//Server
     {
         Server.Update();
-        if (CurrentTick % 200 == 0)
+        if (CurrentTick % 250 == 0)
         {
             SendTick();
         }

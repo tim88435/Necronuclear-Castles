@@ -4,7 +4,16 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject playerModel;//this is the player model
+    public GameObject _playerModel;//this is the player model
+    public GameObject PlayerModel
+    {
+        get => _playerModel;
+        set
+        {
+            _playerModel = value;
+            GameManager.Singleton.LocalPlayerPrefab = value;
+        }
+    }
 
     private static UIManager _singleton;
     public uint gamesWon;
@@ -29,6 +38,7 @@ public class UIManager : MonoBehaviour
     void Awake()
     {
         Singleton = this;//singleton stuff
+        DontDestroyOnLoad(gameObject);
         gamesWon = (uint)Random.Range(0, 2);
     }
 
