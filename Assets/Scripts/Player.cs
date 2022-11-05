@@ -64,10 +64,13 @@ public class Player : MonoBehaviour
     {
         listOfPlayers.Remove(Identification);
     }
-    [MessageHandler((ushort)ClientToServerId.name)]
-    private static void Name(ushort fromClientIdentification, Message message)
+    [MessageHandler((ushort)ClientToServerId.spawn)]
+    private static void SpawnNewPlayer(ushort fromClientIdentification, Message message)
     {
-        Spawn(fromClientIdentification, message.GetString());
+        if (!listOfPlayers.ContainsKey(fromClientIdentification))
+        {
+            Spawn(fromClientIdentification, message.GetString());
+        }
     }
     [MessageHandler((ushort)ServerToClientId.playerSpawned)]
     private static void SpawnPlayer(Message message)

@@ -1,8 +1,14 @@
+using Riptide;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum GameState
+{
+    MainMenu,
+    MainGame,
+}
 public class GameManager : MonoBehaviour
 {
     #region Singleton
@@ -24,11 +30,6 @@ public class GameManager : MonoBehaviour
         }
     }
     #endregion
-    public enum GameState
-    {
-        MainMenu,
-        MainGame,
-    }
     public static GameState CurrentGameState = GameState.MainMenu;
     [SerializeField] private GameObject _localPlayerPrefab;
     public GameObject LocalPlayerPrefab { get; set; }
@@ -71,14 +72,16 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Singleton = this;
-        if (CurrentGameState == GameState.MainGame)
-        {
-            StartGame();
-        }
     }
-    private void StartGame()
-    {
+    //private void StartGame()
+    //{
         //Change name and position
         //Player.Spawn(0, "Host");
+    //}
+    [MessageHandler((ushort)ServerToClientId.startGame)]
+    private void StartGame(Message message)
+    {
+        ChangeScene(1);
+        Player.Spawn(0, "Host", message.GetVector3());
     }
 }

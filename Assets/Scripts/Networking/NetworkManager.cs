@@ -9,10 +9,11 @@ public enum ServerToClientId : ushort
     sync = 1,
     playerSpawned,
     playerPosition,
+    startGame,
 }
 public enum ClientToServerId : ushort//this will contain all the ids for messages that we send from the client to the server
 {
-    name = 1,
+    spawn = 1,//spawn message is just the name of the player for now, skin to be added soon when skins are done
     inputs,
 }
 public class NetworkManager : MonoBehaviour
@@ -92,14 +93,11 @@ public class NetworkManager : MonoBehaviour
     }
     public void Start()
     {
-        if (IsHost)
+        if (!IsHost)
         {
-            if (GameManager.CurrentGameState == GameManager.GameState.MainGame)
+            if (GameManager.CurrentGameState == GameState.MainGame)
             {
-                foreach (Connection item in Server.Clients)
-                {
-                    
-                }
+                SpawnPlayer("");//name is blank now, name to be set later in dev
             }
         }
     }
@@ -138,7 +136,7 @@ public class NetworkManager : MonoBehaviour
         {
             Client = new Client();
             //Connect
-            Client.Connected += Connected;
+            //Client.Connected += Connected;
             //ConnectionFailed
             //Client.ConnectionFailed += Failed;
             //Disconnect
@@ -152,15 +150,24 @@ public class NetworkManager : MonoBehaviour
         //Bring back to main Menu
     }*/
 
-    private void Connected(object sender, EventArgs eventArgs)//Client for when connection established
+    private void Connected(object sender, EventArgs eventArgs)//Server for when connection established
     {
         if (Server.ClientCount == Server.MaxClientCount)
         {
             GameManager.Singleton.ChangeScene(1);
+            StartGame();//tell all the clients that the server has started the game
         }
         //UIManager.UIManagerInstance.SendName();
     }
-
+    /// <summary>
+    /// Called when the server is entering the main game, an tells the clients to do the same
+    /// </summary>
+    private void StartGame()
+    {
+        Message message = Message.Create(MessageSendMode.Reliable, ServerToClientId.startGame);
+        message.AddVector3(Vector3.zero);//add the host player's starting position
+        Server.SendToAll(message);
+    }
     private void Disconnected(object sender, DisconnectedEventArgs e)//Client when disconnected after connection established
     {
         ServerTick = 2;
@@ -241,7 +248,7 @@ public class NetworkManager : MonoBehaviour
     /// <summary>
     /// Call to connect to a server
     /// </summary>
-    public void Connect()//Server
+    public void Connect()//Client
     {
         CheckClient();
         Client.Connect($"{s_InternetProtocol}:{s_port}");
@@ -253,5 +260,11 @@ public class NetworkManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         Server.Stop();
+    }
+    private void SpawnPlayer(string name)
+    {
+        Message message = Message.Create(MessageSendMode.Unreliable, (ushort)ClientToServerId.spawn);
+        message.AddString(name);
+        Client.Send(message);
     }
 }
