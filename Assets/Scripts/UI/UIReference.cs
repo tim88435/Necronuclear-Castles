@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIReference : MonoBehaviour
 {
@@ -8,5 +9,6 @@ public class UIReference : MonoBehaviour
     void Awake()
     {
         UIManager.Singleton.currentUI = gameObject;
+        UIManager.Singleton.blockButton = GameObject.Find("Block Button").GetComponent<ButtonHold>();
     }
 }

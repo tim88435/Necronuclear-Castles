@@ -11,7 +11,7 @@ public class Unlock : MonoBehaviour
     void Start()
     {
         face = GetComponent<Image>();
-        //gets different image depending on number of wins
+        //gets different skin depending on number of wins
         if (card.winsNeeded <= UIManager.Singleton.gamesWon)
         {
             face.sprite = card.cardFace;

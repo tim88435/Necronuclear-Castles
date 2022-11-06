@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     private static UIManager _singleton;
     public uint gamesWon;
 
+    public ButtonHold blockButton;
+
     public static UIManager Singleton
     {
         get => _singleton;
@@ -49,4 +51,6 @@ public class UIManager : MonoBehaviour
     {
         menu.SetActive(false);
     }
+
+
 }

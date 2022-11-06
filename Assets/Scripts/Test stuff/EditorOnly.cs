@@ -5,13 +5,13 @@ using UnityEngine;
 //For objects that should only appear in the editor
 public class EditorOnly : MonoBehaviour
 {
-    private bool inEditor = false;
     // Start is called before the first frame update
     void Start()
     {
 #if UNITY_EDITOR
-        inEditor = true;
+        //if in editor, do nothing
+#else
+        gameObject.SetActive(false);//else, turn off this object
 #endif
-        gameObject.SetActive(inEditor);
     }
 }
