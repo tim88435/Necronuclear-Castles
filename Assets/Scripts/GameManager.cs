@@ -30,6 +30,11 @@ public class GameManager : MonoBehaviour
         }
     }
     #endregion
+    public enum GameState
+    {
+        MainMenu,
+        MainGame,
+    }
     public static GameState CurrentGameState = GameState.MainMenu;
     [SerializeField] private GameObject _localPlayerPrefab;
     public GameObject LocalPlayerPrefab { get; set; }

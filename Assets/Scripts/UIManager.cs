@@ -4,19 +4,13 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject _playerModel;//this is the player model
-    public GameObject PlayerModel
-    {
-        get => _playerModel;
-        set
-        {
-            _playerModel = value;
-            GameManager.Singleton.LocalPlayerPrefab = value;
-        }
-    }
-
+    public string _playerSkin;//this is the player colour
+    public GameObject currentUI;//this is the current UI that the player is seeing
+    
     private static UIManager _singleton;
     public uint gamesWon;
+
+    public ButtonHold blockButton;
 
     public static UIManager Singleton
     {
@@ -57,4 +51,6 @@ public class UIManager : MonoBehaviour
     {
         menu.SetActive(false);
     }
+
+
 }

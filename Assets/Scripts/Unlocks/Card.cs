@@ -10,5 +10,5 @@ public class Card : ScriptableObject
     public Sprite lockedFace;//for locked card
 
     public int winsNeeded;//how many wins are required to unlock this card
-    public GameObject unlock; //this will be the actual unlocked asset
+    public string unlock; //this will be the actual unlocked asset
 }
