@@ -79,9 +79,9 @@ public class GameManager : MonoBehaviour
         //Player.Spawn(0, "Host");
     //}
     [MessageHandler((ushort)ServerToClientId.startGame)]
-    private void StartGame(Message message)
+    private static void StartGame(Message message)
     {
-        ChangeScene(1);
+        Singleton.ChangeScene(1);
         Player.Spawn(0, "Host", message.GetVector3());
     }
 }
