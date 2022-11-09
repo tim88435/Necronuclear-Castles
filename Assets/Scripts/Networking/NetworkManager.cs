@@ -4,6 +4,7 @@ using UnityEngine;
 using Riptide;
 using Riptide.Utils;
 using System;
+using UnityEngine.SceneManagement;
 public enum ServerToClientId : ushort
 {
     sync = 1,
@@ -91,16 +92,6 @@ public class NetworkManager : MonoBehaviour
         RiptideLogger.Initialize(Debug.Log, Debug.Log, Debug.LogWarning, Debug.LogError, false);
         Singleton = this;
         DontDestroyOnLoad(gameObject);
-    }
-    public void Start()
-    {
-        if (!IsHost)
-        {
-            if (GameManager.CurrentGameState == GameState.MainGame)
-            {
-                SpawnPlayer("");//name is blank now, name to be set later in dev
-            }
-        }
     }
     /// <summary>
     /// Call this when you start a lobby that players can connect to
@@ -261,12 +252,5 @@ public class NetworkManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         Server.Stop();
-    }
-    private void SpawnPlayer(string name)
-    {
-        Message message = Message.Create(MessageSendMode.Reliable, (ushort)ClientToServerId.spawn);
-        message.AddString(name);
-        message.AddString(UIManager.Singleton.PlayerSkin);
-        Client.Send(message);
     }
 }

@@ -1,4 +1,5 @@
 using Riptide;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,19 +68,51 @@ public class GameManager : MonoBehaviour
         Singleton = this;
         DontDestroyOnLoad(gameObject);
     }
-    private void Start()
+    public void Start()
     {
-        Singleton = this;
+        SceneManager.sceneLoaded += SceneLoaded;
     }
+
+    private void SceneLoaded(Scene scene, LoadSceneMode _)
+    {
+        if (scene.buildIndex == 1 || scene.buildIndex == 2)
+        {
+            if (GameManager.CurrentGameState == GameState.MainGame)
+            {
+                if (NetworkManager.IsHost)
+                {
+                    Player.Spawn(0, "Host", "#FFFFFF");
+                }
+                else
+                {
+                    SpawnPlayer("");//name is blank now, name to be set later in dev
+                }
+            }
+            if (!NetworkManager.IsHost)
+            {
+                if (GameManager.CurrentGameState == GameState.MainGame)
+                {
+                    SpawnPlayer("");//name is blank now, name to be set later in dev
+                }
+            }
+        }
+    }
+
     //private void StartGame()
     //{
-        //Change name and position
-        //Player.Spawn(0, "Host");
+    //Change name and position
+    //Player.Spawn(0, "Host");
     //}
     [MessageHandler((ushort)ServerToClientId.startGame)]
     private static void StartGame(Message message)
     {
         Singleton.ChangeScene(1);
-        Player.Spawn(0, "Host", message.GetVector3());
+    }
+    private void SpawnPlayer(string name)
+    {
+        Message message = Message.Create(MessageSendMode.Reliable, (ushort)ClientToServerId.spawn);
+        message.AddString(name);
+        message.AddString(UIManager.Singleton.PlayerSkin);
+        NetworkManager.Singleton.Client.Send(message);
     }
 }
