@@ -75,25 +75,15 @@ public class GameManager : MonoBehaviour
 
     private void SceneLoaded(Scene scene, LoadSceneMode _)
     {
-        if (scene.buildIndex == 1 || scene.buildIndex == 2)
+        if (CurrentGameState == GameState.MainGame)
         {
-            if (GameManager.CurrentGameState == GameState.MainGame)
+            if (NetworkManager.IsHost)
             {
-                if (NetworkManager.IsHost)
-                {
-                    Player.Spawn(0, "Host", "#FFFFFF");
-                }
-                else
-                {
-                    SpawnPlayer("");//name is blank now, name to be set later in dev
-                }
+                Player.Spawn(0, "Host", "#FFFFFF");
             }
-            if (!NetworkManager.IsHost)
+            else
             {
-                if (GameManager.CurrentGameState == GameState.MainGame)
-                {
-                    SpawnPlayer("");//name is blank now, name to be set later in dev
-                }
+                SpawnPlayer("");//name is blank now, name to be set later in dev
             }
         }
     }

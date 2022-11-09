@@ -67,8 +67,8 @@ public class Player : MonoBehaviour
         {
             Player.playerColour = colour;
         }
+        listOfPlayers.Add(identification, Player);//only then add the new player
         Player.SendSpawned();//send info on new player to all other players
-        listOfPlayers.Add(identification, Player);//ony then add the new player
     }
     private void SendSpawned()
     {

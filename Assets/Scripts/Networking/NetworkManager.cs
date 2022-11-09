@@ -247,10 +247,16 @@ public class NetworkManager : MonoBehaviour
     }
     private void OnDestroy()
     {
-        Server.Stop();
+        if (Server != null)
+        {
+            Server.Stop();
+        }
     }
     private void OnApplicationQuit()
     {
-        Server.Stop();
+        if (Server != null)
+        {
+            Server.Stop();
+        }
     }
 }
