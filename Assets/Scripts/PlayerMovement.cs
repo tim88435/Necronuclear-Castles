@@ -64,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
         NetworkManager.Singleton.Client.Send(message);
     }
     [MessageHandler((ushort)MessageIdentification.inputs)]
-    private static void GetInputs(ushort fromClientIdentification, Message message)
+    public static void GetInputs(ushort fromClientIdentification, Message message)
     {
         if (Player.listOfPlayers.TryGetValue(fromClientIdentification, out Player player))
         {

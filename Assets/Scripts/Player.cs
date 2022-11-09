@@ -95,7 +95,7 @@ public class Player : MonoBehaviour
         listOfPlayers.Remove(Identification);
     }
     [MessageHandler((ushort)MessageIdentification.spawn)]
-    private static void SpawnNewPlayer(ushort fromClientIdentification, Message message)
+    public static void SpawnNewPlayer(ushort fromClientIdentification, Message message)
     {
         if (!listOfPlayers.ContainsKey(fromClientIdentification))
         {
@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
         }
     }
     [MessageHandler((ushort)MessageIdentification.playerSpawned)]
-    private static void SpawnPlayer(Message message)
+    public static void SpawnPlayer(Message message)
     {
         Spawn(message.GetUShort(), message.GetString(), message.GetVector3());
     }
@@ -118,7 +118,7 @@ public class Player : MonoBehaviour
         }*/
     }
     [MessageHandler((ushort)MessageIdentification.playerPosition)]
-    private static void UpdatePosition(Message message)
+    public static void UpdatePosition(Message message)
     {
         if (listOfPlayers.TryGetValue(message.GetUShort(), out Player player))
         {
@@ -142,7 +142,7 @@ public class Player : MonoBehaviour
     }
     //message handler to handle player states
     [MessageHandler((ushort)MessageIdentification.playerState)]
-    private static void ReceivePlayerStates(ushort fromClientIdentification, Message message)
+    public static void ReceivePlayerStates(ushort fromClientIdentification, Message message)
     {
         if (listOfPlayers.TryGetValue(fromClientIdentification, out Player player))
         {
