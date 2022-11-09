@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 317101dd3cd680b47b9cae812a8ae284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  s_port: 1234
+  s_port: 666
   s_InternetProtocol: 
   tickDivergenceTolerance: 1
   s_maxClientCount: 1
