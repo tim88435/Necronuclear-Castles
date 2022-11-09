@@ -56,6 +56,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8163758803407079126}
   - component: {fileID: 7268963900397587527}
+  - component: {fileID: 5235311479174314285}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -94,6 +95,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weapon: {fileID: 11400000, guid: 99d69d75862850048b62d234de37f0fd, type: 2}
   _isBlocking: 0
+--- !u!114 &5235311479174314285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5358224379656461018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d8b5dae1132dac4995c46ecc52b3d3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 0}
+  _interpolator: {fileID: 0}
+  joystick1: {x: 0, y: 0}
+  joystick2: {x: 0, y: 0}
+  inputs: 000000
 --- !u!1 &6068755110905759060
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;//god i hate tmp
+using Riptide;
 
 public class Attack : MonoBehaviour
 {
     private SphereCollider _weaponHitbox;
     [SerializeField] private Weapon _weapon;//default is fist
-    [SerializeField] private bool _isBlocking = false;
+    private Player player;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
+        player = GetComponent<Player>();
         //grab and disable weapon hitbox
         _weaponHitbox = GetComponentInChildren<SphereCollider>();
         _weaponHitbox.enabled = false;
@@ -32,16 +34,19 @@ public class Attack : MonoBehaviour
 
     private void Update()
     {
-        if (UIManager.Singleton.blockButton.buttonHeld)//if block button held
+        if (player.isLocal)
         {
-            _isBlocking = true;
+            player.inputs[0] = UIManager.Singleton.BlockButton.buttonHeld;
         }
-        else
+        if (player.inputs[0] == true)//if block button held
         {
-            _isBlocking = false;
-        }    
+            player.CurrentPlayerStateIdentification = PlayerStateIdentification.Block;
+        }
+        else if (player.CurrentPlayerStateIdentification == PlayerStateIdentification.Block)
+        {
+            player.CurrentPlayerStateIdentification = PlayerStateIdentification.Idle;
+        }
     }
-
     public void Swing()
     {
         

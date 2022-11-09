@@ -2,14 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Riptide;
-
+public enum PlayerStateIdentification
+{
+    Idle = 1,
+    Block,
+    Jab,
+    Attack,
+    Pickup,
+}
 public class Player : MonoBehaviour
 {
     public static Dictionary<ushort, Player> listOfPlayers = new Dictionary<ushort, Player>();
+    [SerializeField] private PlayerStateIdentification _currentPlayerStateIdentification = PlayerStateIdentification.Idle;
+    public PlayerStateIdentification CurrentPlayerStateIdentification
+    {
+        get => _currentPlayerStateIdentification;
+        set
+        {//if current is idle or you are switching to idle, switch
+            if (_currentPlayerStateIdentification == PlayerStateIdentification.Idle || value == PlayerStateIdentification.Idle)
+            {
+                _currentPlayerStateIdentification = value;
+            }//otherwise ignore it
+        }
+    }
     public ushort Identification { get; private set; }
     private string username;
+    private Color playerColour;
     public bool isLocal { get; private set; }
-    public Transform cameraTransform;
+    //public Transform cameraTransform;
     [SerializeField] private Interpolator _interpolator;
     public Vector2 joystick1;//last input from client
     public Vector2 joystick2;//last input from client
@@ -32,7 +52,7 @@ public class Player : MonoBehaviour
         Player.Identification = identification;
         listOfPlayers.Add(identification, Player);
     }
-    public static void Spawn(ushort identification, string username)//server adding a new client
+    public static void Spawn(ushort identification, string username, string skin)//server adding a new client
     {
         foreach (Player otherPlayer in listOfPlayers.Values)
         {//send info on all other players to the new player
@@ -42,6 +62,10 @@ public class Player : MonoBehaviour
         Player.name = $"Player {identification}({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
         Player.Identification = identification;
         Player.username = string.IsNullOrEmpty(username) ? "Guest" : username;
+        if (ColorUtility.TryParseHtmlString(skin, out Color colour))
+        {
+            Player.playerColour = colour;
+        }
         Player.SendSpawned();//send info on new player to all other players
         listOfPlayers.Add(identification, Player);//ony then add the new player
     }
@@ -58,6 +82,7 @@ public class Player : MonoBehaviour
         message.AddUShort(Identification);
         message.AddString(username);
         message.AddVector3(transform.position);
+        message.AddString(ColorUtility.ToHtmlStringRGB(playerColour));
         return message;
     }
     private void OnDestroy()
@@ -69,7 +94,7 @@ public class Player : MonoBehaviour
     {
         if (!listOfPlayers.ContainsKey(fromClientIdentification))
         {
-            Spawn(fromClientIdentification, message.GetString());
+            Spawn(fromClientIdentification, message.GetString(), message.GetString());
         }
     }
     [MessageHandler((ushort)ServerToClientId.playerSpawned)]
@@ -81,10 +106,11 @@ public class Player : MonoBehaviour
     {
         //transform.position = newPosition;
         _interpolator.NewUpdate(tick, newPosition);
-        if (!isLocal)
+        transform.forward = forward;
+        /*if (!isLocal)
         {
             cameraTransform.forward = forward;
-        }
+        }*/
     }
     [MessageHandler((ushort)ServerToClientId.playerPosition)]
     private static void UpdatePosition(Message message)
@@ -99,5 +125,30 @@ public class Player : MonoBehaviour
         this.inputs = inputs;
         this.joystick1 = joystick1;
         this.joystick2 = joystick2;
+    }
+    /// <summary>
+    /// The server sends the message of each player (e.g. who is attacking and blocking)
+    /// </summary>
+    private void SendState()
+    {
+        Message message = Message.Create(MessageSendMode.Reliable, ServerToClientId.playerState);
+        message.AddUShort((ushort)CurrentPlayerStateIdentification);
+        NetworkManager.Singleton.Server.SendToAll(message);
+    }
+    //message handler to handle player states
+    [MessageHandler((ushort)ServerToClientId.playerState)]
+    public static void ReceivePlayerStates(ushort fromClientIdentification, Message message)
+    {
+        if (listOfPlayers.TryGetValue(fromClientIdentification, out Player player))
+        {
+            if (!player.isLocal)
+            {
+                player.HandlePlayerStates(message.GetUShort());
+            }
+        }
+    }
+    private void HandlePlayerStates(int stateIdentification)
+    {
+        CurrentPlayerStateIdentification = (PlayerStateIdentification)stateIdentification;
     }
 }

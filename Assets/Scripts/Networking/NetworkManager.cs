@@ -10,6 +10,7 @@ public enum ServerToClientId : ushort
     playerSpawned,
     playerPosition,
     startGame,
+    playerState,
 }
 public enum ClientToServerId : ushort//this will contain all the ids for messages that we send from the client to the server
 {
@@ -263,8 +264,9 @@ public class NetworkManager : MonoBehaviour
     }
     private void SpawnPlayer(string name)
     {
-        Message message = Message.Create(MessageSendMode.Unreliable, (ushort)ClientToServerId.spawn);
+        Message message = Message.Create(MessageSendMode.Reliable, (ushort)ClientToServerId.spawn);
         message.AddString(name);
+        message.AddString(UIManager.Singleton.PlayerSkin);
         Client.Send(message);
     }
 }

@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    public string _playerSkin;//this is the player colour
+    private string _playerSkin;//this is the player colour
+    public string PlayerSkin { get; set; }
     public GameObject currentUI;//this is the current UI that the player is seeing
     
     private static UIManager _singleton;
     public uint gamesWon;
 
-    public ButtonHold blockButton;
+    public ButtonHold _blockButton;
+    public ButtonHold BlockButton { get => _blockButton; set { _blockButton = value; } }
 
     public static UIManager Singleton
     {

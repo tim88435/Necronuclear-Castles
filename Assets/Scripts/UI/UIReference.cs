@@ -9,6 +9,6 @@ public class UIReference : MonoBehaviour
     void Awake()
     {
         UIManager.Singleton.currentUI = gameObject;
-        UIManager.Singleton.blockButton = GameObject.Find("Block Button").GetComponent<ButtonHold>();
+        UIManager.Singleton.BlockButton = GameObject.Find("Block Button").GetComponent<ButtonHold>();
     }
 }
