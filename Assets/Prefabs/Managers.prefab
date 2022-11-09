@@ -46,8 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8001e2aeb32fe48a0582d17c6d3fa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerModel: {fileID: 0}
+  _playerSkin: 
+  currentUI: {fileID: 0}
   gamesWon: 0
+  blockButton: {fileID: 0}
 --- !u!114 &4142285694939713877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,8 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd932929fbc76d74dadac339fc44f3c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _localPlayerPrefab: {fileID: 0}
-  _playerPrefab: {fileID: 0}
+  _playerPrefab: {fileID: 5358224379656461018, guid: df7664620dca0c84bb3e026ad64bab4b, type: 3}
 --- !u!114 &9114179614853221128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,7 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 317101dd3cd680b47b9cae812a8ae284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  s_port: 0
+  s_port: 1234
   s_InternetProtocol: 
   tickDivergenceTolerance: 1
-  s_maxClientCount: 0
+  s_maxClientCount: 1

@@ -31,8 +31,6 @@ public class GameManager : MonoBehaviour
     }
     #endregion
     public static GameState CurrentGameState = GameState.MainMenu;
-    [SerializeField] private GameObject _localPlayerPrefab;
-    public GameObject LocalPlayerPrefab { get; set; }
     [SerializeField] private GameObject _playerPrefab;
     public GameObject playerPrefab => _playerPrefab;
     public void ChangeScene(int sceneNumber)

@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
         Player Player;
         if (identification == NetworkManager.Singleton.Client.Id)
         {
-            Player = Instantiate(GameManager.Singleton.LocalPlayerPrefab, Vector3.up, Quaternion.identity).GetComponent<Player>();
+            Player = Instantiate(GameManager.Singleton.playerPrefab, Vector3.up, Quaternion.identity).GetComponent<Player>();
             Player.isLocal = true;
         }
         else
