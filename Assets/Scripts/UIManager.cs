@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
     private string _playerSkin;//this is the player colour
     public string PlayerSkin { get; set; }
     public GameObject currentUI;//this is the current UI that the player is seeing
-    
+
     private static UIManager _singleton;
     public uint gamesWon;
 
@@ -35,9 +35,17 @@ public class UIManager : MonoBehaviour
     {
         Singleton = this;//singleton stuff
         DontDestroyOnLoad(gameObject);
-        gamesWon = (uint)Random.Range(0, 2);
+        //load games won regkey, if no key then generate one
+        if (PlayerPrefs.HasKey("gamesWon"))
+        {
+            PlayerPrefs.GetInt("gamesWon");
+        }
+        else
+        {
+            PlayerPrefs.SetInt("gamesWon", 0);
+        }
     }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -54,5 +62,11 @@ public class UIManager : MonoBehaviour
         menu.SetActive(false);
     }
 
-
+    public void EndGame(bool won)//use this when game ends, increases games won if the player wins
+    {
+        if (won)
+        {
+            PlayerPrefs.SetInt("gamesWon", (int)gamesWon + 1);
+        }
+    }
 }

@@ -17,6 +17,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_Text.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Unlocks/Card.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -69,6 +70,7 @@
       <workItem from="1667359391157" duration="4086000" />
       <workItem from="1667365493137" duration="1294000" />
       <workItem from="1667366930007" duration="4411000" />
+      <workItem from="1667954790728" duration="3544000" />
     </task>
     <servers />
   </component>
