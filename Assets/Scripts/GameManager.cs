@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                SpawnPlayer("");//name is blank now, name to be set later in dev
+                SpawnPlayer(" ");//name is blank now, name to be set later in dev
             }
         }
     }

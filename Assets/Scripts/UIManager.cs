@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    private string _playerSkin;//this is the player colour
-    public string PlayerSkin { get; set; }
+    [SerializeField] private string _playerSkin;//this is the player colour
+    public string PlayerSkin { get => _playerSkin; set { _playerSkin = value; } }
     public GameObject currentUI;//this is the current UI that the player is seeing
 
     private static UIManager _singleton;
