@@ -36,6 +36,10 @@ public class Player : MonoBehaviour
     public bool[] inputs = new bool[3];//last inputs from client
     public static void Spawn(ushort identification, string username, Vector3 position)//for each client when a new client joins
     {
+        if (listOfPlayers.ContainsKey(identification))
+        {
+            return;
+        }
         Player Player;
         if (identification == NetworkManager.Singleton.Client.Id)
         {
@@ -93,7 +97,6 @@ public class Player : MonoBehaviour
     [MessageHandler((ushort)MessageIdentification.spawn)]
     private static void SpawnNewPlayer(ushort fromClientIdentification, Message message)
     {
-        Debug.Log($"Sent message to server to spawn this client player");
         if (!listOfPlayers.ContainsKey(fromClientIdentification))
         {
             Spawn(fromClientIdentification, message.GetString(), message.GetString());
@@ -152,5 +155,9 @@ public class Player : MonoBehaviour
     private void HandlePlayerStates(int stateIdentification)
     {
         CurrentPlayerStateIdentification = (PlayerStateIdentification)stateIdentification;
+    }
+    private void FixedUpdate()
+    {
+        SendState();
     }
 }
