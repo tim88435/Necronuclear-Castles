@@ -93,6 +93,7 @@ public class Player : MonoBehaviour
     [MessageHandler((ushort)MessageIdentification.spawn)]
     private static void SpawnNewPlayer(ushort fromClientIdentification, Message message)
     {
+        Debug.Log($"Sent message to server to spawn this client player");
         if (!listOfPlayers.ContainsKey(fromClientIdentification))
         {
             Spawn(fromClientIdentification, message.GetString(), message.GetString());

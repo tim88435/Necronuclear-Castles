@@ -104,5 +104,6 @@ public class GameManager : MonoBehaviour
         message.AddString(name);
         message.AddString(UIManager.Singleton.PlayerSkin);
         NetworkManager.Singleton.Client.Send(message);
+        Debug.Log($"Sent message to server to spawn this client player");
     }
 }
