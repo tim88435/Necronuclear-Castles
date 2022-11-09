@@ -70,13 +70,13 @@ public class Player : MonoBehaviour
         listOfPlayers.Add(identification, Player);//only then add the new player
         Player.SendSpawned();//send info on new player to all other players
     }
-    private void SendSpawned()
+    private void SendSpawned()//send info on this instance of player to ALL players
     {
-        NetworkManager.Singleton.Server.SendToAll(AddSpawnData(Message.Create(MessageSendMode.Reliable, (ushort)ServerToClientId.playerSpawned)));
+        NetworkManager.Singleton.Server.SendToAll(AddSpawnData(Message.Create(MessageSendMode.Reliable, (ushort)MessageIdentification.playerSpawned)));
     }
-    private void SendSpawned(ushort toClientID)
+    private void SendSpawned(ushort toClientID)//send into on this instance of player to the client ID player
     {
-        NetworkManager.Singleton.Server.Send(AddSpawnData(Message.Create(MessageSendMode.Reliable, (ushort)ServerToClientId.playerSpawned)), toClientID);
+        NetworkManager.Singleton.Server.Send(AddSpawnData(Message.Create(MessageSendMode.Reliable, (ushort)MessageIdentification.playerSpawned)), toClientID);
     }
     private Message AddSpawnData(Message message)
     {
@@ -90,7 +90,7 @@ public class Player : MonoBehaviour
     {
         listOfPlayers.Remove(Identification);
     }
-    [MessageHandler((ushort)ClientToServerId.spawn)]
+    [MessageHandler((ushort)MessageIdentification.spawn)]
     private static void SpawnNewPlayer(ushort fromClientIdentification, Message message)
     {
         if (!listOfPlayers.ContainsKey(fromClientIdentification))
@@ -98,7 +98,7 @@ public class Player : MonoBehaviour
             Spawn(fromClientIdentification, message.GetString(), message.GetString());
         }
     }
-    [MessageHandler((ushort)ServerToClientId.playerSpawned)]
+    [MessageHandler((ushort)MessageIdentification.playerSpawned)]
     private static void SpawnPlayer(Message message)
     {
         Spawn(message.GetUShort(), message.GetString(), message.GetVector3());
@@ -113,7 +113,7 @@ public class Player : MonoBehaviour
             cameraTransform.forward = forward;
         }*/
     }
-    [MessageHandler((ushort)ServerToClientId.playerPosition)]
+    [MessageHandler((ushort)MessageIdentification.playerPosition)]
     private static void UpdatePosition(Message message)
     {
         if (listOfPlayers.TryGetValue(message.GetUShort(), out Player player))
@@ -132,12 +132,12 @@ public class Player : MonoBehaviour
     /// </summary>
     private void SendState()
     {
-        Message message = Message.Create(MessageSendMode.Reliable, ServerToClientId.playerState);
+        Message message = Message.Create(MessageSendMode.Reliable, MessageIdentification.playerState);
         message.AddUShort((ushort)CurrentPlayerStateIdentification);
         NetworkManager.Singleton.Server.SendToAll(message);
     }
     //message handler to handle player states
-    [MessageHandler((ushort)ServerToClientId.playerState)]
+    [MessageHandler((ushort)MessageIdentification.playerState)]
     public static void ReceivePlayerStates(ushort fromClientIdentification, Message message)
     {
         if (listOfPlayers.TryGetValue(fromClientIdentification, out Player player))

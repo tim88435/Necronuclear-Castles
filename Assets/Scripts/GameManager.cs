@@ -93,14 +93,14 @@ public class GameManager : MonoBehaviour
     //Change name and position
     //Player.Spawn(0, "Host");
     //}
-    [MessageHandler((ushort)ServerToClientId.startGame)]
+    [MessageHandler((ushort)MessageIdentification.startGame)]
     private static void StartGame(Message message)
     {
         Singleton.ChangeScene(1);
     }
     private void SpawnPlayer(string name)
     {
-        Message message = Message.Create(MessageSendMode.Reliable, (ushort)ClientToServerId.spawn);
+        Message message = Message.Create(MessageSendMode.Reliable, (ushort)MessageIdentification.spawn);
         message.AddString(name);
         message.AddString(UIManager.Singleton.PlayerSkin);
         NetworkManager.Singleton.Client.Send(message);
