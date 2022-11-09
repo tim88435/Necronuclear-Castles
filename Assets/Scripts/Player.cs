@@ -142,7 +142,7 @@ public class Player : MonoBehaviour
     }
     //message handler to handle player states
     [MessageHandler((ushort)MessageIdentification.playerState)]
-    public static void ReceivePlayerStates(ushort fromClientIdentification, Message message)
+    private static void ReceivePlayerStates(ushort fromClientIdentification, Message message)
     {
         if (listOfPlayers.TryGetValue(fromClientIdentification, out Player player))
         {
@@ -158,6 +158,9 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        SendState();
+        if (NetworkManager.IsHost)
+        {
+            SendState();
+        }
     }
 }
