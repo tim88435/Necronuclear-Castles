@@ -24,6 +24,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     private Canvas _canvas;
     private Camera _cam;
     public Vector2 input = Vector2.zero;
+    public bool InputUpdate; //i  put this here to make sure the player rotation doesnt snap with the joystick when input resets
 
     #endregion
 
@@ -214,11 +215,13 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
+        InputUpdate = true;
         OnDrag(eventData);
     }
 
     public virtual void OnPointerUp(PointerEventData eventData)
     {
+        InputUpdate = false;
         input = Vector2.zero;
         _handle.anchoredPosition = Vector2.zero;
     }

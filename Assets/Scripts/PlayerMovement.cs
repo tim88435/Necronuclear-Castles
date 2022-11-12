@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _blockSpeed;
+    [SerializeField] private Joystick Joystick;
     private void OnValidate()
     {
         if (_characterController == null)
@@ -23,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (NetworkManager.IsHost)
         {
-            Move(_player.joystick1, _player.joystick2, _player.inputs);
+            Move(Joystick.input, _player.joystick2, _player.inputs);
         }
         else
         {
