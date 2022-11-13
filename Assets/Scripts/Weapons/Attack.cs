@@ -40,11 +40,11 @@ public class Attack : MonoBehaviour
         }
         if (player.inputs[0] == true)//if block button held
         {
-            player.CurrentPlayerStateIdentification = PlayerStateIdentification.Block;
+            player.CurrentPlayerState = PlayerStateIdentification.Block;
         }
-        else if (player.CurrentPlayerStateIdentification == PlayerStateIdentification.Block)
+        else if (player.CurrentPlayerState == PlayerStateIdentification.Block)
         {
-            player.CurrentPlayerStateIdentification = PlayerStateIdentification.Idle;
+            player.CurrentPlayerState = PlayerStateIdentification.Idle;
         }
     }
     public void Swing()

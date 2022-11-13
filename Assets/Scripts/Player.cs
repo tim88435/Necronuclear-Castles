@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
 {
     public static Dictionary<ushort, Player> listOfPlayers = new Dictionary<ushort, Player>();
     [SerializeField] private PlayerStateIdentification _currentPlayerStateIdentification = PlayerStateIdentification.Idle;
-    public PlayerStateIdentification CurrentPlayerStateIdentification
+    public PlayerStateIdentification CurrentPlayerState
     {
         get => _currentPlayerStateIdentification;
         set
@@ -137,14 +137,16 @@ public class Player : MonoBehaviour
     private void SendState()
     {
         Message message = Message.Create(MessageSendMode.Reliable, MessageIdentification.playerState);
-        message.AddUShort((ushort)CurrentPlayerStateIdentification);
+        message.AddUShort(Identification);
+        message.AddUShort((ushort)CurrentPlayerState);
         NetworkManager.Singleton.Server.SendToAll(message);
     }
     //message handler to handle player states
     [MessageHandler((ushort)MessageIdentification.playerState)]
-    public static void ReceivePlayerStates(ushort fromClientIdentification, Message message)
+    public static void ReceivePlayerStates(Message message)
     {
-        if (listOfPlayers.TryGetValue(fromClientIdentification, out Player player))
+        Debug.LogWarning("Got message on player states");
+        if (listOfPlayers.TryGetValue(message.GetUShort(), out Player player))
         {
             if (!player.isLocal)
             {
@@ -154,7 +156,7 @@ public class Player : MonoBehaviour
     }
     private void HandlePlayerStates(int stateIdentification)
     {
-        CurrentPlayerStateIdentification = (PlayerStateIdentification)stateIdentification;
+        CurrentPlayerState = (PlayerStateIdentification)stateIdentification;
     }
     private void FixedUpdate()
     {
