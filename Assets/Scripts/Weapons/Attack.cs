@@ -54,4 +54,24 @@ public class Attack : MonoBehaviour
     {
         
     }
+    /// <summary>
+    /// Send the information to the players (from ther server) that a player has gotten hit by this player
+    /// </summary>
+    /// <param name="otherPlayer">Player that has gotten hit</param>
+    private void SendHit(Player otherPlayer)
+    {
+        Message message = Message.Create(MessageSendMode.Reliable, MessageIdentification.damage);
+        message.AddUShort(player.Identification);
+        message.AddUShort(otherPlayer.Identification);
+        NetworkManager.Singleton.Server.SendToAll(message);
+    }
+    /// <summary>
+    /// Call to damage a player
+    /// </summary>
+    /// <param name="player">The other player that just got hit</param>
+    public void DealDamage(Player player)
+    {
+        //this instance is the attacker that hit the other player
+        //player is the other player that just got hit
+    }
 }

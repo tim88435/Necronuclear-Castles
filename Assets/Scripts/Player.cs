@@ -30,7 +30,8 @@ public class Player : MonoBehaviour
     private Color playerColour;
     public bool isLocal { get; private set; }
     //public Transform cameraTransform;
-    [SerializeField] private Interpolator _interpolator;
+    private Interpolator _interpolator;
+    private Attack attackScript;
     public Vector2 joystick1;//last input from client
     public Vector2 joystick2;//last input from client
     public bool[] inputs = new bool[3];//last inputs from client
@@ -53,6 +54,8 @@ public class Player : MonoBehaviour
         }
         Player.name = $"Player {identification}({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
         Player.username = username;
+        Player._interpolator = Player.GetComponent<Interpolator>();
+        Player.attackScript = Player.GetComponent<Attack>();
         Player.Identification = identification;
         listOfPlayers.Add(identification, Player);
     }
@@ -156,7 +159,6 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Client insance of player handler of player states
     /// </summary>
-    /// <param name="stateIdentification"></param>
     private void HandlePlayerStates(int stateIdentification)
     {
         CurrentPlayerState = (PlayerStateIdentification)stateIdentification;
@@ -166,6 +168,20 @@ public class Player : MonoBehaviour
         if (NetworkManager.IsHost)
         {
             SendState();//172.27.14.102
+        }
+    }
+    /// <summary>
+    /// Client message hanlder to show the player that they took damage
+    /// </summary>
+    [MessageHandler((ushort)MessageIdentification.damage)]
+    private static void GetDamage(Message message)
+    {
+        if (listOfPlayers.TryGetValue(message.GetUShort(), out Player playerAttacked))
+        {
+            if (listOfPlayers.TryGetValue(message.GetUShort(), out Player playerHit))
+            {
+                playerAttacked.attackScript.DealDamage(playerHit);
+            }
         }
     }
 }
