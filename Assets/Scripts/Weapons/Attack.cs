@@ -34,17 +34,17 @@ public class Attack : MonoBehaviour
 
     private void Update()
     {
-        if (player.isLocal)
+        if (NetworkManager.IsHost || player.isLocal)
         {
             player.inputs[0] = UIManager.Singleton.BlockButton.buttonHeld;
-        }
-        if (player.inputs[0] == true)//if block button held
-        {
-            player.CurrentPlayerState = PlayerStateIdentification.Block;
-        }
-        else if (player.CurrentPlayerState == PlayerStateIdentification.Block)
-        {
-            player.CurrentPlayerState = PlayerStateIdentification.Idle;
+            if (player.inputs[0])//if block button held
+            {
+                player.CurrentPlayerState = PlayerStateIdentification.Block;
+            }
+            else if (player.CurrentPlayerState == PlayerStateIdentification.Block)
+            {
+                player.CurrentPlayerState = PlayerStateIdentification.Idle;
+            }
         }
     }
     public void Swing()

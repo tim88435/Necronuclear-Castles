@@ -136,16 +136,15 @@ public class Player : MonoBehaviour
     /// </summary>
     private void SendState()
     {
-        Message message = Message.Create(MessageSendMode.Reliable, MessageIdentification.playerState);
+        Message message = Message.Create(MessageSendMode.Unreliable, MessageIdentification.playerState);
         message.AddUShort(Identification);
         message.AddUShort((ushort)CurrentPlayerState);
         NetworkManager.Singleton.Server.SendToAll(message);
     }
-    //message handler to handle player states
+    //message handler for client to handle player states
     [MessageHandler((ushort)MessageIdentification.playerState)]
     public static void ReceivePlayerStates(Message message)
     {
-        Debug.LogWarning("Got message on player states");
         if (listOfPlayers.TryGetValue(message.GetUShort(), out Player player))
         {
             if (!player.isLocal)
@@ -154,6 +153,10 @@ public class Player : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Client insance of player handler of player states
+    /// </summary>
+    /// <param name="stateIdentification"></param>
     private void HandlePlayerStates(int stateIdentification)
     {
         CurrentPlayerState = (PlayerStateIdentification)stateIdentification;
