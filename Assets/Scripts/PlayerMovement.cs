@@ -62,7 +62,6 @@ public class PlayerMovement : MonoBehaviour
         message.AddVector3(Vector3.zero);//joystick 1
         message.AddVector3(Vector3.zero);//joystick 2
         NetworkManager.Singleton.Client.Send(message);
-        Debug.Log($"Sent Bools: {_player.inputs[0]}, {_player.inputs[1]}, {_player.inputs[2]}");
     }
     [MessageHandler((ushort)MessageIdentification.inputs)]
     public static void GetInputs(ushort fromClientIdentification, Message message)

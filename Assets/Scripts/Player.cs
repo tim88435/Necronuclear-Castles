@@ -127,7 +127,6 @@ public class Player : MonoBehaviour
     }
     public void SetInputs(bool[] inputs, Vector3 joystick1, Vector3 joystick2)
     {
-        Debug.Log($"Got Bools: {inputs[0]}, {inputs[1]}, {inputs[2]}");
         this.inputs = inputs;
         this.joystick1 = joystick1;
         this.joystick2 = joystick2;
