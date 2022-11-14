@@ -4,8 +4,8 @@ using UnityEngine;
 using Riptide;
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private Player _player;
-    [SerializeField] private CharacterController _characterController;
+    private Player _player;
+    private CharacterController _characterController;
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _blockSpeed;
     private void OnValidate()

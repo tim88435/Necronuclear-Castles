@@ -548,7 +548,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!143 &874388896
 CharacterController:
   m_ObjectHideFlags: 0
@@ -595,7 +595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d8b5dae1132dac4995c46ecc52b3d3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTransform: {fileID: 0}
+  _currentPlayerStateIdentification: 1
   _interpolator: {fileID: 0}
   joystick1: {x: 0, y: 0}
   joystick2: {x: 0, y: 0}
