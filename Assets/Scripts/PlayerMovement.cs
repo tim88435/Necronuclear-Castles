@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController _characterController;
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _blockSpeed;
-    private void OnValidate()
+    private void OnEnable()
     {
         if (_characterController == null)
         {

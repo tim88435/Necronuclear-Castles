@@ -235,6 +235,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5358224379656461018, guid: df7664620dca0c84bb3e026ad64bab4b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8163758803407079126, guid: df7664620dca0c84bb3e026ad64bab4b, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -579,8 +583,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afc16522f694a19468ebf825d9700dec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 874388898}
-  _characterController: {fileID: 874388896}
   _movementSpeed: 0
   _blockSpeed: 0
 --- !u!114 &874388898
