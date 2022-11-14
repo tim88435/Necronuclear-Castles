@@ -34,9 +34,12 @@ public class Attack : MonoBehaviour
 
     private void Update()
     {
-        if (NetworkManager.IsHost || player.isLocal)
+        if (player.isLocal)
         {
             player.inputs[0] = UIManager.Singleton.BlockButton.buttonHeld;
+        }
+        if (NetworkManager.IsHost || player.isLocal)
+        {
             if (player.inputs[0])//if block button held
             {
                 player.CurrentPlayerState = PlayerStateIdentification.Block;
