@@ -11,7 +11,7 @@ public class Attack : MonoBehaviour
     [SerializeField] private Weapon _weapon;//default is fist
     private Player player;
 
-    [SerializeField] private GameObject nearbyPickup;
+    [SerializeField] private Collider[] nearbyPickup;
 
     [SerializeField] private int _weaponDuration;//how long the weapon hitbox stays active in fixedupdate frames
     // Start is called before the first frame update
@@ -37,10 +37,13 @@ public class Attack : MonoBehaviour
 
     private void Update()
     {
+        //pickup stuff
+        nearbyPickup = Physics.OverlapSphere(transform.position, 2f, LayerMask.GetMask("Pickups"), QueryTriggerInteraction.Collide);//gets all pickups in radius 2
+
         if (player.isLocal)
         {
             player.inputs[0] = UIManager.Singleton.BlockButton.buttonHeld;
-            if(nearbyPickup == null)
+            if(nearbyPickup.Length >= 0)
                 UIManager.Singleton.PickupButton.SetActive(false);
             else
                 UIManager.Singleton.PickupButton.SetActive(true);
@@ -89,17 +92,5 @@ public class Attack : MonoBehaviour
     {
         //this instance is the attacker that hit the other player
         //player is the other player that just got hit
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.transform.tag == "Weapon")
-            nearbyPickup = other.gameObject;
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if(other.transform.tag == "Weapon")
-            nearbyPickup = null;
     }
 }

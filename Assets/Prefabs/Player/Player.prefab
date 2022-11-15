@@ -60,7 +60,6 @@ GameObject:
   - component: {fileID: 3031928878736440489}
   - component: {fileID: -3622600984058089805}
   - component: {fileID: -8427532810015625046}
-  - component: {fileID: 893689016976639162}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -99,7 +98,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponHitbox: {fileID: 4729300289552300895}
   _weapon: {fileID: 11400000, guid: 99d69d75862850048b62d234de37f0fd, type: 2}
-  nearbyPickup: {fileID: 0}
+  nearbyPickup:
+  - {fileID: 0}
+  _weaponDuration: 0
 --- !u!114 &5235311479174314285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,19 +165,6 @@ MonoBehaviour:
   _timeElapsed: 0
   _timeToReachTarget: 0.05
   _movementThreshhold: 0.05
---- !u!135 &893689016976639162
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5358224379656461018}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6068755110905759060
 GameObject:
   m_ObjectHideFlags: 0
