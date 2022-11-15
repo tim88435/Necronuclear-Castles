@@ -15,4 +15,4 @@ MonoBehaviour:
   cardFace: {fileID: 21300000, guid: 7570c34fe603c784a8a1fd0a2393c22b, type: 3}
   lockedFace: {fileID: 21300000, guid: eb2d82163c103cd489a8db1b4278e9bb, type: 3}
   winsNeeded: 0
-  unlock: FF0000
+  unlock: '#FF0000'

@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
         {
             if (NetworkManager.IsHost)
             {
-                Player.Spawn(0, "Host", "#FFFFFF");
+                Player.Spawn(0, "Host", UIManager.Singleton.PlayerSkin);
             }
             else
             {

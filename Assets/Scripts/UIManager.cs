@@ -11,8 +11,11 @@ public class UIManager : MonoBehaviour
     private static UIManager _singleton;
     public uint gamesWon;
 
-    public ButtonHold _blockButton;
+    private ButtonHold _blockButton;
     public ButtonHold BlockButton { get => _blockButton; set { _blockButton = value; } }
+
+    private GameObject _pickupButton;
+    public GameObject PickupButton { get => _pickupButton; set { _pickupButton = value; } }
 
     public static UIManager Singleton
     {

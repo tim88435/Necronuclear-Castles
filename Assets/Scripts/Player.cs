@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     }
     public ushort Identification { get; private set; }
     private string username;
-    private Color playerColour;
+    [SerializeField] private Color playerColour;
     public bool isLocal { get; private set; }
     //public Transform cameraTransform;
     private Interpolator _interpolator;
@@ -72,7 +72,8 @@ public class Player : MonoBehaviour
         Player.username = string.IsNullOrEmpty(username) ? "Guest" : username;
         if (ColorUtility.TryParseHtmlString(skin, out Color colour))
         {
-            Player.playerColour = colour;
+            //Player.playerColour = colour;
+            Player.GetComponentInChildren<Renderer>().material.color = colour;
         }
         Player.SendSpawned();//send info on new player to all other players
         listOfPlayers.Add(identification, Player);//only then add the new player

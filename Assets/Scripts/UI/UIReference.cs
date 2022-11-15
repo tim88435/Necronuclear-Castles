@@ -10,5 +10,6 @@ public class UIReference : MonoBehaviour
     {
         UIManager.Singleton.currentUI = gameObject;
         UIManager.Singleton.BlockButton = GameObject.Find("Block Button").GetComponent<ButtonHold>();
+        UIManager.Singleton.PickupButton = GameObject.Find("Pickup Weapon");
     }
 }
