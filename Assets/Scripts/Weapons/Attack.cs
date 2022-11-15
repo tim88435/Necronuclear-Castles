@@ -35,6 +35,18 @@ public class Attack : MonoBehaviour
         model.GetComponent<MeshRenderer>().material = weapon.skin;
     }
 
+    //can be used for both player and enemy
+    public void Pickup()
+    {
+        if(nearbyPickup.Length > 0)//in case player picks up a weapon before the enemy
+        {
+            //set up weapon in ui
+            SetWeapon(nearbyPickup[0].GetComponent<ItemPickup>().weapon);
+            //remove weapon from world
+            Destroy(nearbyPickup[0]);
+        }
+    }
+
     private void Update()
     {
         //pickup stuff
@@ -92,5 +104,22 @@ public class Attack : MonoBehaviour
     {
         //this instance is the attacker that hit the other player
         //player is the other player that just got hit
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("something is here");
+        //if sphere hits player
+        if(other.transform.root.tag == "Player" && other.transform.root != transform.root)
+        {
+            if(Mathf.Abs(Vector3.SignedAngle(transform.forward, other.transform.position, Vector3.up)) < 45)//if the other player is in front of the current player
+            {
+                //send hit message
+                Debug.Log("hit");
+            }
+            else
+                Debug.Log("miss");
+        }
+        Debug.Log(Mathf.Abs(Vector3.SignedAngle(other.transform.root.position - transform.root.position, transform.root.forward, Vector3.up)));
     }
 }

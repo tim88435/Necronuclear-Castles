@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemPickup : MonoBehaviour
 {
-    [SerializeField] private Weapon weapon;
+    public Weapon weapon;
     // Start is called before the first frame update
     void Start()
     {
