@@ -23,8 +23,6 @@ public class UIReference : MonoBehaviour
 
     private void Start()
     {
-        //forces ui to get local player
-        UIManager.Singleton.GetLocalPlayer();
         //button tests
         UIManager.Singleton.PickupButton.GetComponent<Button>().onClick.AddListener(UIManager.Singleton.Pickup);
         UIManager.Singleton.JabButton.GetComponent<Button>().onClick.AddListener(UIManager.Singleton.Attack);

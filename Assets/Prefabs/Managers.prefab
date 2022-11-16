@@ -46,10 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8001e2aeb32fe48a0582d17c6d3fa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerSkin: FFFFFF
+  _playerSkin: '#FFFFFF'
   currentUI: {fileID: 0}
   gamesWon: 0
-  _blockButton: {fileID: 0}
+  localPlayer: {fileID: 0}
 --- !u!114 &4142285694939713877
 MonoBehaviour:
   m_ObjectHideFlags: 0

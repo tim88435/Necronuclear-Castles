@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour
     public GameObject currentUI;//this is the current UI that the player is seeing
 
     private static UIManager _singleton;
-    public uint gamesWon;
+    public int gamesWon;
     public Player localPlayer;
 
     #region Variables
@@ -67,7 +67,7 @@ public class UIManager : MonoBehaviour
         //load games won regkey, if no key then generate one
         if (PlayerPrefs.HasKey("gamesWon"))
         {
-            PlayerPrefs.GetInt("gamesWon");
+            gamesWon = PlayerPrefs.GetInt("gamesWon");
         }
         else
         {
@@ -96,34 +96,20 @@ public class UIManager : MonoBehaviour
     {
         if (won)
         {
-            PlayerPrefs.SetInt("gamesWon", (int)gamesWon + 1);
-        }
-    }
-    
-    //get local player
-    public void GetLocalPlayer()
-    {
-        //get local player
-        foreach (KeyValuePair<ushort,Player> player in Player.listOfPlayers)
-        {
-            if (player.Value.isLocal)
-            {
-                localPlayer = player.Value;
-                Debug.Log("Local player found");
-            }
+            PlayerPrefs.SetInt("gamesWon", gamesWon + 1);
         }
     }
     #region Events
     //for button & testing, player picks up weapon
     public void Pickup()
     {
-        localPlayer.GetComponentInChildren<Attack>().Pickup();
+        Player.Local.GetComponentInChildren<Attack>().Pickup();
     }
     
     //for button & testing, player attacks
     public void Attack()
     {
-        localPlayer.GetComponent<Attack>().Swing();
+        Player.Local.GetComponent<Attack>().Swing();
     }
 
     //open pause panel

@@ -39,14 +39,22 @@ public class Attack : MonoBehaviour
     //can be used for both player and enemy
     public void Pickup()
     {
-        if(nearbyPickup.Length > 0)//in case player picks up a weapon before the enemy
+        if (NetworkManager.IsHost)
         {
-            //set up weapon in ui
-            SetWeapon(nearbyPickup[0].GetComponent<ItemPickup>().weapon);
-            //remove weapon from world
-            Destroy(nearbyPickup[0].gameObject);
-            //send destruction message to server
+            if (nearbyPickup.Length > 0)//in case player picks up a weapon before the enemy
+            {
+                //set up weapon in ui
+                SetWeapon(nearbyPickup[0].GetComponent<ItemPickup>().weapon);
+                //remove weapon from world
+                Destroy(nearbyPickup[0].gameObject);
+                //send destruction message to server
+            }
         }
+        else
+        {
+            
+        }
+        
     }
 
     private void Update()

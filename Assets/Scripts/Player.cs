@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     private string username;
     [SerializeField] private Color playerColour;
     public bool isLocal { get; private set; }
+    public static Player Local { get; private set; }
     //public Transform cameraTransform;
     private Interpolator _interpolator;
     private Attack attackScript;
@@ -47,6 +48,7 @@ public class Player : MonoBehaviour
         {
             Player = Instantiate(GameManager.Singleton.playerPrefab, Vector3.up, Quaternion.identity).GetComponent<Player>();
             Player.isLocal = true;
+            Local = Player;
         }
         else
         {
