@@ -8,7 +8,8 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController _characterController;
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _blockSpeed;
-    [SerializeField] private Joystick Joystick;
+    [SerializeField] private Joystick joystick;
+    //[SerializeField] private Joystick joystick2;
     private void OnEnable()
     {
         if (_characterController == null)
@@ -24,10 +25,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (NetworkManager.IsHost)
         {
-            Move(Joystick.input, _player.joystick2, _player.inputs);
+            Move(joystick.input, _player.joystick2, _player.inputs);
         }
         else
         {
+            SetInput(joystick.input);
             SendInputs();
         }
     }
@@ -38,11 +40,15 @@ public class PlayerMovement : MonoBehaviour
         _characterController.Move(moveDirection);
         SendMovement();
     }
-    public void SetInput(bool[] inputs, Vector3 forward)
+    public void SetInput(Vector2 input)
     {
-        _player.inputs = inputs;
-        transform.forward = forward;
+        _player.joystick1 = input;
     }
+    /*public void SetInput(Vector2 input, Vector2 input2)
+    {
+        _player.joystick1 = input;
+        _player.joystick2 = input2;
+    }*/
     public void SendMovement()
     {
         if (NetworkManager.Singleton.CurrentTick % 2 != 0)
