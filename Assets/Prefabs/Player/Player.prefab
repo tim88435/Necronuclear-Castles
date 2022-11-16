@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 71144986327362852}
   - component: {fileID: 4729300289552300895}
   - component: {fileID: 5649489982070123805}
+  - component: {fileID: 6575003606324961281}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
@@ -63,6 +64,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6575003606324961281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227046118855316560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b2739a8ef08a142a3d92fa08762f6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5358224379656461018
 GameObject:
   m_ObjectHideFlags: 0

@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+
     public void QuitGame()
     {
         Application.Quit();
@@ -104,5 +105,19 @@ public class GameManager : MonoBehaviour
         message.AddString(name);
         message.AddString(UIManager.Singleton.PlayerSkin);
         NetworkManager.Singleton.Client.Send(message);
+    }
+
+    //finds and returns item with id
+    public GameObject FindItem(int ID)
+    {
+        foreach (GameObject o in ItemPickup.weaponList)
+        {
+            if (o.GetComponent<ItemPickup>().itemID == ID)
+            {
+                return o;
+            }
+        }
+        //if item not found
+        return null;
     }
 }

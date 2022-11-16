@@ -14,6 +14,7 @@ public class Attack : MonoBehaviour
     [SerializeField] private Collider[] nearbyPickup;
 
     [SerializeField] private int _weaponDuration;//how long the weapon hitbox stays active in fixedupdate frames
+    [SerializeField] private float _weaponCooldown;//how long the weapon cools down for before being usable again
     // Start is called before the first frame update
     private void Start()
     {
@@ -43,22 +44,23 @@ public class Attack : MonoBehaviour
             //set up weapon in ui
             SetWeapon(nearbyPickup[0].GetComponent<ItemPickup>().weapon);
             //remove weapon from world
-            Destroy(nearbyPickup[0]);
+            Destroy(nearbyPickup[0].gameObject);
+            //send destruction message to server
         }
     }
 
     private void Update()
     {
-        //pickup stuff
+        //get list of all nearby pickups
         nearbyPickup = Physics.OverlapSphere(transform.position, 2f, LayerMask.GetMask("Pickups"), QueryTriggerInteraction.Collide);//gets all pickups in radius 2
 
         if (player.isLocal)
         {
             player.inputs[0] = UIManager.Singleton.BlockButton.buttonHeld;
-            if(nearbyPickup.Length >= 0)
-                UIManager.Singleton.PickupButton.SetActive(false);
-            else
+            if(nearbyPickup.Length > 0)//if there are nearby pickups
                 UIManager.Singleton.PickupButton.SetActive(true);
+            else
+                UIManager.Singleton.PickupButton.SetActive(false);
         }
         if (NetworkManager.IsHost || player.isLocal)
         {
@@ -75,6 +77,7 @@ public class Attack : MonoBehaviour
 
     private void FixedUpdate()
     {
+        _weaponCooldown -= Time.deltaTime;
         _weaponDuration--;
         if(_weaponDuration == 0)
             _weaponHitbox.enabled = false;
@@ -82,8 +85,12 @@ public class Attack : MonoBehaviour
     //turns on weapon hitbox for 10 frames
     public void Swing()
     {
-        _weaponHitbox.enabled = true;
-        _weaponDuration = 10;
+        if (_weaponCooldown <= 0)
+        {
+            _weaponHitbox.enabled = true;
+            _weaponDuration = 10;
+            _weaponCooldown = _weapon.cooldown + 0.2f;//0.2f is 10 frames of fixedupdate
+        }
     }
     /// <summary>
     /// Send the information to the players (from ther server) that a player has gotten hit by this player
@@ -104,22 +111,5 @@ public class Attack : MonoBehaviour
     {
         //this instance is the attacker that hit the other player
         //player is the other player that just got hit
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("something is here");
-        //if sphere hits player
-        if(other.transform.root.tag == "Player" && other.transform.root != transform.root)
-        {
-            if(Mathf.Abs(Vector3.SignedAngle(transform.forward, other.transform.position, Vector3.up)) < 45)//if the other player is in front of the current player
-            {
-                //send hit message
-                Debug.Log("hit");
-            }
-            else
-                Debug.Log("miss");
-        }
-        Debug.Log(Mathf.Abs(Vector3.SignedAngle(other.transform.root.position - transform.root.position, transform.root.forward, Vector3.up)));
     }
 }

@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
     //public Transform cameraTransform;
     private Interpolator _interpolator;
     private Attack attackScript;
+    public float health = 10;//10 is maximum health
     public Vector2 joystick1;//last input from client
     public Vector2 joystick2;//last input from client
     public bool[] inputs = new bool[3];//last inputs from client
