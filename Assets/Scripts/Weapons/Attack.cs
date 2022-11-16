@@ -7,17 +7,21 @@ using Riptide;
 
 public class Attack : MonoBehaviour
 {
-    private SphereCollider _weaponHitbox;
+    [SerializeField] private SphereCollider _weaponHitbox;
     [SerializeField] private Weapon _weapon;//default is fist
     private Player player;
 
+    [SerializeField] private Collider[] nearbyPickup;
+
+    [SerializeField] private int _weaponDuration;//how long the weapon hitbox stays active in fixedupdate frames
+    [SerializeField] private float _weaponCooldown;//how long the weapon cools down for before being usable again
     // Start is called before the first frame update
     private void Start()
     {
         player = GetComponent<Player>();
         //grab and disable weapon hitbox
-        _weaponHitbox = GetComponentInChildren<SphereCollider>();
-        _weaponHitbox.enabled = false;
+        //_weaponHitbox = GetComponentInChildren<SphereCollider>();
+        //_weaponHitbox.enabled = false;
         //set default weapon as fist
         SetWeapon(_weapon);
     }
@@ -32,23 +36,80 @@ public class Attack : MonoBehaviour
         model.GetComponent<MeshRenderer>().material = weapon.skin;
     }
 
+    //can be used for both player and enemy
+    public void Pickup()
+    {
+        if(nearbyPickup.Length > 0)//in case player picks up a weapon before the enemy
+        {
+            //set up weapon in ui
+            SetWeapon(nearbyPickup[0].GetComponent<ItemPickup>().weapon);
+            //remove weapon from world
+            Destroy(nearbyPickup[0].gameObject);
+            //send destruction message to server
+        }
+    }
+
     private void Update()
     {
+        //get list of all nearby pickups
+        nearbyPickup = Physics.OverlapSphere(transform.position, 2f, LayerMask.GetMask("Pickups"), QueryTriggerInteraction.Collide);//gets all pickups in radius 2
+
         if (player.isLocal)
         {
             player.inputs[0] = UIManager.Singleton.BlockButton.buttonHeld;
+            if(nearbyPickup.Length > 0)//if there are nearby pickups
+                UIManager.Singleton.PickupButton.SetActive(true);
+            else
+                UIManager.Singleton.PickupButton.SetActive(false);
         }
-        if (player.inputs[0] == true)//if block button held
+        if (NetworkManager.IsHost || player.isLocal)
         {
-            player.CurrentPlayerStateIdentification = PlayerStateIdentification.Block;
-        }
-        else if (player.CurrentPlayerStateIdentification == PlayerStateIdentification.Block)
-        {
-            player.CurrentPlayerStateIdentification = PlayerStateIdentification.Idle;
+            if (player.inputs[0])//if block button held
+            {
+                player.CurrentPlayerState = PlayerStateIdentification.Block;
+            }
+            else if (player.CurrentPlayerState == PlayerStateIdentification.Block)
+            {
+                player.CurrentPlayerState = PlayerStateIdentification.Idle;
+            }
         }
     }
+
+    private void FixedUpdate()
+    {
+        _weaponCooldown -= Time.deltaTime;
+        _weaponDuration--;
+        if(_weaponDuration == 0)
+            _weaponHitbox.enabled = false;
+    }
+    //turns on weapon hitbox for 10 frames
     public void Swing()
     {
-        
+        if (_weaponCooldown <= 0)
+        {
+            _weaponHitbox.enabled = true;
+            _weaponDuration = 10;
+            _weaponCooldown = _weapon.cooldown + 0.2f;//0.2f is 10 frames of fixedupdate
+        }
+    }
+    /// <summary>
+    /// Send the information to the players (from ther server) that a player has gotten hit by this player
+    /// </summary>
+    /// <param name="otherPlayer">Player that has gotten hit</param>
+    private void SendHit(Player otherPlayer)
+    {
+        Message message = Message.Create(MessageSendMode.Reliable, MessageIdentification.damage);
+        message.AddUShort(player.Identification);//player who hit
+        message.AddUShort(otherPlayer.Identification);//player who got hit
+        NetworkManager.Singleton.Server.SendToAll(message);
+    }
+    /// <summary>
+    /// Call to damage a player
+    /// </summary>
+    /// <param name="player">The other player that just got hit</param>
+    public void DealDamage(Player player)
+    {
+        //this instance is the attacker that hit the other player
+        //player is the other player that just got hit
     }
 }

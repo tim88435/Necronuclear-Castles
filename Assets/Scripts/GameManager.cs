@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+
     public void QuitGame()
     {
         Application.Quit();
@@ -75,25 +76,15 @@ public class GameManager : MonoBehaviour
 
     private void SceneLoaded(Scene scene, LoadSceneMode _)
     {
-        if (scene.buildIndex == 1 || scene.buildIndex == 2)
+        if (CurrentGameState == GameState.MainGame)
         {
-            if (GameManager.CurrentGameState == GameState.MainGame)
+            if (NetworkManager.IsHost)
             {
-                if (NetworkManager.IsHost)
-                {
-                    Player.Spawn(0, "Host", "#FFFFFF");
-                }
-                else
-                {
-                    SpawnPlayer("");//name is blank now, name to be set later in dev
-                }
+                Player.Spawn(0, "Host", UIManager.Singleton.PlayerSkin);
             }
-            if (!NetworkManager.IsHost)
+            else
             {
-                if (GameManager.CurrentGameState == GameState.MainGame)
-                {
-                    SpawnPlayer("");//name is blank now, name to be set later in dev
-                }
+                SpawnPlayer(" ");//name is blank now, name to be set later in dev
             }
         }
     }
@@ -103,16 +94,30 @@ public class GameManager : MonoBehaviour
     //Change name and position
     //Player.Spawn(0, "Host");
     //}
-    [MessageHandler((ushort)ServerToClientId.startGame)]
-    private static void StartGame(Message message)
+    [MessageHandler((ushort)MessageIdentification.startGame)]
+    public static void StartGame(Message message)
     {
         Singleton.ChangeScene(1);
     }
     private void SpawnPlayer(string name)
     {
-        Message message = Message.Create(MessageSendMode.Reliable, (ushort)ClientToServerId.spawn);
+        Message message = Message.Create(MessageSendMode.Reliable, (ushort)MessageIdentification.spawn);
         message.AddString(name);
         message.AddString(UIManager.Singleton.PlayerSkin);
         NetworkManager.Singleton.Client.Send(message);
+    }
+
+    //finds and returns item with id
+    public GameObject FindItem(int ID)
+    {
+        foreach (GameObject o in ItemPickup.weaponList)
+        {
+            if (o.GetComponent<ItemPickup>().itemID == ID)
+            {
+                return o;
+            }
+        }
+        //if item not found
+        return null;
     }
 }

@@ -4,12 +4,12 @@ using UnityEngine;
 using Riptide;
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private Player _player;
-    [SerializeField] private CharacterController _characterController;
+    private Player _player;
+    private CharacterController _characterController;
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _blockSpeed;
     [SerializeField] private Joystick Joystick;
-    private void OnValidate()
+    private void OnEnable()
     {
         if (_characterController == null)
         {
@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
-        Message message = Message.Create(MessageSendMode.Unreliable, ServerToClientId.playerPosition);
+        Message message = Message.Create(MessageSendMode.Unreliable, MessageIdentification.playerPosition);
         message.AddUShort(_player.Identification);
         message.AddUShort(NetworkManager.Singleton.CurrentTick);
         message.AddVector3(transform.position);
@@ -58,14 +58,14 @@ public class PlayerMovement : MonoBehaviour
     }
     private void SendInputs()
     {
-        Message message = Message.Create(MessageSendMode.Unreliable, ClientToServerId.inputs);
+        Message message = Message.Create(MessageSendMode.Unreliable, MessageIdentification.inputs);
         message.AddBools(_player.inputs, false);//buttons
         message.AddVector3(Vector3.zero);//joystick 1
         message.AddVector3(Vector3.zero);//joystick 2
         NetworkManager.Singleton.Client.Send(message);
     }
-    [MessageHandler((ushort)ClientToServerId.inputs)]
-    private static void GetInputs(ushort fromClientIdentification, Message message)
+    [MessageHandler((ushort)MessageIdentification.inputs)]
+    public static void GetInputs(ushort fromClientIdentification, Message message)
     {
         if (Player.listOfPlayers.TryGetValue(fromClientIdentification, out Player player))
         {

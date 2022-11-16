@@ -6,6 +6,7 @@ public class AngleTest : MonoBehaviour
 {
     public Transform target;
     public Vector3 targetDir;
+    public float signedAngle;
     public float angle;
     // Start is called before the first frame update
     void Start()
@@ -17,6 +18,7 @@ public class AngleTest : MonoBehaviour
     void Update()
     {
         targetDir = target.position - transform.position;
-        angle = Vector3.SignedAngle(targetDir, transform.forward, Vector3.up);
+        signedAngle = Vector3.SignedAngle(transform.forward, targetDir, Vector3.up);
+        angle = Vector3.Angle(transform.forward, targetDir);
     }
 }

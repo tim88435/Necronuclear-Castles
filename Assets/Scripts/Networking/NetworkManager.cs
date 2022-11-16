@@ -5,18 +5,16 @@ using Riptide;
 using Riptide.Utils;
 using System;
 using UnityEngine.SceneManagement;
-public enum ServerToClientId : ushort
+public enum MessageIdentification : ushort
 {
     sync = 1,
     playerSpawned,
     playerPosition,
     startGame,
     playerState,
-}
-public enum ClientToServerId : ushort//this will contain all the ids for messages that we send from the client to the server
-{
-    spawn = 1,//spawn message is just the name of the player for now, skin to be added soon when skins are done
+    spawn,
     inputs,
+    damage,
 }
 public class NetworkManager : MonoBehaviour
 {
@@ -156,7 +154,7 @@ public class NetworkManager : MonoBehaviour
     /// </summary>
     private void StartGame()
     {
-        Message message = Message.Create(MessageSendMode.Reliable, ServerToClientId.startGame);
+        Message message = Message.Create(MessageSendMode.Reliable, MessageIdentification.startGame);
         message.AddVector3(Vector3.zero);//add the host player's starting position
         Server.SendToAll(message);
     }
@@ -213,7 +211,7 @@ public class NetworkManager : MonoBehaviour
     /// </summary>
     private void SendTick()//Server
     {
-        Message message = Message.Create(MessageSendMode.Unreliable, (ushort)ServerToClientId.sync);
+        Message message = Message.Create(MessageSendMode.Unreliable, (ushort)MessageIdentification.sync);
         message.AddUShort(CurrentTick);
         Server.SendToAll(message);
     }
@@ -232,7 +230,7 @@ public class NetworkManager : MonoBehaviour
     /// <summary>
     /// Client listener to revieve the current tick
     /// </summary>
-    [MessageHandler((ushort)ServerToClientId.sync)]
+    [MessageHandler((ushort)MessageIdentification.sync)]
     public static void Sync(Message message)//Client
     {
         Singleton.SetTick(message.GetUShort());
@@ -247,10 +245,16 @@ public class NetworkManager : MonoBehaviour
     }
     private void OnDestroy()
     {
-        Server.Stop();
+        if (Server != null)
+        {
+            Server.Stop();
+        }
     }
     private void OnApplicationQuit()
     {
-        Server.Stop();
+        if (Server != null)
+        {
+            Server.Stop();
+        }
     }
 }
