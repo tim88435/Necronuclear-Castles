@@ -20,21 +20,29 @@ public class PlayerMovement : MonoBehaviour
         {
             _player = GetComponent<Player>();
         }
+        if (joystick == null)
+        {
+            joystick = GameObject.Find("Joystick Panel").GetComponent<Joystick>();
+        }
     }
     private void FixedUpdate()
     {
+        if (_player.isLocal)
+        {
+            SetInput(joystick.input);
+        }
         if (NetworkManager.IsHost)
         {
             Move(joystick.input, _player.joystick2, _player.inputs);
         }
         else
         {
-            SetInput(joystick.input);
             SendInputs();
         }
     }
     private void Move(Vector2 inputDirection1, Vector2 inputDirection2, bool[] inputs)
     {
+        Debug.Log(inputDirection1);
         Vector2 moveDirection = inputDirection1 + inputDirection2;
         //block stuff idk @Dez
         _characterController.Move(moveDirection);
