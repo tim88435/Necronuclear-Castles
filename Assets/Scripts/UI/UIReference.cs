@@ -12,11 +12,6 @@ public class UIReference : MonoBehaviour
         UIManager.Singleton.currentUI = gameObject;
         UIManager.Singleton.BlockButton = GameObject.Find("Block Button").GetComponent<ButtonHold>();
         UIManager.Singleton.PickupButton = GameObject.Find("Pickup Weapon");
-        UIManager.Singleton.JabButton = GameObject.Find("Jab Button");
-        UIManager.Singleton.AttackButton = GameObject.Find("Attack Button");
-        UIManager.Singleton.PauseButton = GameObject.Find("Pause Button");
-        UIManager.Singleton.ContinueButton = GameObject.Find("Continue Button");
-        UIManager.Singleton.QuitButton = GameObject.Find("Quit Button");
         UIManager.Singleton.PausePanel = GameObject.Find("Pause Panel");
         UIManager.Singleton.PausePanel.SetActive(false);
     }
@@ -25,12 +20,41 @@ public class UIReference : MonoBehaviour
     {
         //forces ui to get local player
         UIManager.Singleton.GetLocalPlayer();
-        //button tests
-        UIManager.Singleton.PickupButton.GetComponent<Button>().onClick.AddListener(UIManager.Singleton.Pickup);
-        UIManager.Singleton.JabButton.GetComponent<Button>().onClick.AddListener(UIManager.Singleton.Attack);
-        UIManager.Singleton.AttackButton.GetComponent<Button>().onClick.AddListener(UIManager.Singleton.Attack);
-        UIManager.Singleton.PauseButton.GetComponent<Button>().onClick.AddListener(UIManager.Singleton.Pause);
-        UIManager.Singleton.ContinueButton.GetComponent<Button>().onClick.AddListener(UIManager.Singleton.Unpause);
-        UIManager.Singleton.QuitButton.GetComponent<Button>().onClick.AddListener(GameManager.Singleton.QuitGame);
+    }
+    
+    //more listener event testing
+    public void PickUpButton()
+    {
+        UIManager.Singleton.SendMessage("Pickup", SendMessageOptions.DontRequireReceiver);
+    }
+
+    public void AttackButton()
+    {
+        UIManager.Singleton.SendMessage("Attack", SendMessageOptions.DontRequireReceiver);
+    }
+
+    public void JabButton()
+    {
+        UIManager.Singleton.SendMessage("Jab", SendMessageOptions.DontRequireReceiver);
+    }
+
+    public void PauseButton()
+    {
+        UIManager.Singleton.SendMessage("Pause", SendMessageOptions.DontRequireReceiver);
+    }
+
+    public void ContinueButton()
+    {
+        UIManager.Singleton.SendMessage("Unpause", SendMessageOptions.DontRequireReceiver);
+    }
+
+    public void QuitButton()
+    {
+        UIManager.Singleton.SendMessage("QuitGame", SendMessageOptions.DontRequireReceiver);
+    }
+
+    public void MainMenuButton()
+    {
+        UIManager.Singleton.SendMessage("ChangeScene", 0, SendMessageOptions.DontRequireReceiver);
     }
 }

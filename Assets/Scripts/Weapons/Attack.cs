@@ -74,7 +74,7 @@ public class Attack : MonoBehaviour
             }
         }
     }
-
+    //disables hitbox when time is up, and moves cooldown forward
     private void FixedUpdate()
     {
         _weaponCooldown -= Time.deltaTime;
