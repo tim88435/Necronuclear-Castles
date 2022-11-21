@@ -1126,7 +1126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26f0f3420897cc14ba97935ec4b05c4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hpBar: {fileID: 0}
+  hpBar: {fileID: 7327080685223634222}
   localPlayer: {fileID: 0}
 --- !u!1 &7327080685744332396
 GameObject:
@@ -1775,6 +1775,7 @@ MonoBehaviour:
   background: {fileID: 7327080685744332397}
   _handle: {fileID: 7327080686909042222}
   input: {x: 0, y: 0}
+  InputUpdate: 0
   _moveThreshold: 1
   _joystickType: 0
 --- !u!1 &7327080686004425490

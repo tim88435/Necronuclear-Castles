@@ -11,7 +11,6 @@ public class UIManager : MonoBehaviour
 
     private static UIManager _singleton;
     public int gamesWon;
-    public Player localPlayer;
 
     #region Variables
 

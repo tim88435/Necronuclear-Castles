@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4449,6 +4449,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Managers
       objectReference: {fileID: 0}
+    - target: {fileID: 4142285694939713877, guid: f8a8126b2314fff4a86ebc13363b53b7, type: 3}
+      propertyPath: spawnableWeapons.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142285694939713877, guid: f8a8126b2314fff4a86ebc13363b53b7, type: 3}
+      propertyPath: spawnableWeapons.Array.data[0]
+      value: 
+      objectReference: {fileID: 5929074025857247027, guid: 2f6c5daca5a1fdc4890c57ed857b4c29, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8a8126b2314fff4a86ebc13363b53b7, type: 3}
 --- !u!114 &2281773228550219487 stripped

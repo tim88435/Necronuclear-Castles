@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     public static GameState CurrentGameState = GameState.MainMenu;
     [SerializeField] private GameObject _playerPrefab;
     public GameObject playerPrefab => _playerPrefab;
+    public GameObject[] spawnableWeapons;
     public void ChangeScene(int sceneNumber)
     {
         switch (sceneNumber)
@@ -106,18 +107,30 @@ public class GameManager : MonoBehaviour
         message.AddString(UIManager.Singleton.PlayerSkin);
         NetworkManager.Singleton.Client.Send(message);
     }
-
-    //finds and returns item with id
-    public GameObject FindItem(int ID)
+    public static GameObject GetWeapon(ushort index)
     {
-        foreach (GameObject o in ItemPickup.weaponList)
+        if (index < 0)
         {
-            if (o.GetComponent<ItemPickup>().itemID == ID)
+            Debug.Log($"Index {index} is negative");
+            return null;
+        }
+        if (Singleton.spawnableWeapons.Length >= index)
+        {
+            Debug.Log($"Set weapon at index {index} not found");
+            return null;
+        }
+        return Singleton.spawnableWeapons[index];
+    }
+    public static ushort GetWeapon(Weapon weapon)
+    {
+        for (int i = 0; i < Singleton.spawnableWeapons.Length; i++)
+        {
+            if (Singleton.spawnableWeapons[i].GetComponent<ItemPickup>().weapon == weapon)
             {
-                return o;
+                return (ushort)i;
             }
         }
-        //if item not found
-        return null;
+        Debug.Log($"No saved weapon called {weapon.weaponName} exists");
+        return 0;
     }
 }

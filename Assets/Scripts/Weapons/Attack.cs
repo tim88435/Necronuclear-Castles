@@ -62,7 +62,7 @@ public class Attack : MonoBehaviour
         //get list of all nearby pickups
         nearbyPickup = Physics.OverlapSphere(transform.position, 2f, LayerMask.GetMask("Pickups"), QueryTriggerInteraction.Collide);//gets all pickups in radius 2
 
-        if (player.isLocal)
+        if (player.IsLocal)
         {
             player.inputs[0] = UIManager.Singleton.BlockButton.buttonHeld;
             if(nearbyPickup.Length > 0)//if there are nearby pickups
@@ -70,7 +70,7 @@ public class Attack : MonoBehaviour
             else
                 UIManager.Singleton.PickupButton.SetActive(false);
         }
-        if (NetworkManager.IsHost || player.isLocal)
+        if (NetworkManager.IsHost || player.IsLocal)
         {
             if (player.inputs[0])//if block button held
             {

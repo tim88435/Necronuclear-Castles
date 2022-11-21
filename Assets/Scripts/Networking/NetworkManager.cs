@@ -15,6 +15,7 @@ public enum MessageIdentification : ushort
     spawn,
     inputs,
     damage,
+    itemSpawn,
 }
 public class NetworkManager : MonoBehaviour
 {

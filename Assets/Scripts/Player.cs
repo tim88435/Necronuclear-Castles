@@ -28,7 +28,22 @@ public class Player : MonoBehaviour
     public ushort Identification { get; private set; }
     private string username;
     [SerializeField] private Color playerColour;
-    public bool isLocal { get; private set; }
+    private bool isLocal;
+    public bool IsLocal
+    {
+        get
+        {
+            return isLocal;
+        }
+        private set
+        {
+            isLocal = value;
+            if (isLocal)
+            {
+                Local = this;
+            }
+        }
+    }
     public static Player Local { get; private set; }
     //public Transform cameraTransform;
     private Interpolator _interpolator;
@@ -47,13 +62,13 @@ public class Player : MonoBehaviour
         if (identification == NetworkManager.Singleton.Client.Id)
         {
             Player = Instantiate(GameManager.Singleton.playerPrefab, Vector3.up, Quaternion.identity).GetComponent<Player>();
-            Player.isLocal = true;
+            Player.IsLocal = true;
             Local = Player;
         }
         else
         {
             Player = Instantiate(GameManager.Singleton.playerPrefab, Vector3.up, Quaternion.identity).GetComponent<Player>();
-            Player.isLocal = false;
+            Player.IsLocal = false;
         }
         Player.name = $"Player {identification}({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
         Player.username = username;
@@ -71,7 +86,7 @@ public class Player : MonoBehaviour
         Player Player = Instantiate(GameManager.Singleton.playerPrefab, Vector3.up, Quaternion.identity).GetComponent<Player>();
         Player.name = $"Player {identification}({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
         Player.Identification = identification;
-        Player.isLocal = identification == 0;
+        Player.IsLocal = identification == 0;
         Player.username = string.IsNullOrEmpty(username) ? "Guest" : username;
         if (ColorUtility.TryParseHtmlString(skin, out Color colour))
         {
@@ -154,7 +169,7 @@ public class Player : MonoBehaviour
     {
         if (listOfPlayers.TryGetValue(message.GetUShort(), out Player player))
         {
-            if (!player.isLocal)
+            if (!player.IsLocal)
             {
                 player.HandlePlayerStates(message.GetUShort());
             }

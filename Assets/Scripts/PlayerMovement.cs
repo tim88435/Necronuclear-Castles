@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (_player.isLocal)
+        if (_player.IsLocal)
         {
             SetInput(joystick.input);
         }

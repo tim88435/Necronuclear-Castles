@@ -16,6 +16,6 @@ public class HP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        hpBar.fillAmount = UIManager.Singleton.localPlayer.health / 10f;
+        hpBar.fillAmount = Player.Local.health / 10f;
     }
 }
