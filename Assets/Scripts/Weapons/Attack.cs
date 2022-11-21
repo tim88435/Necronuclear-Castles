@@ -26,7 +26,7 @@ public class Attack : MonoBehaviour
         SetWeapon(_weapon);
     }
 
-    public void SetWeapon(Weapon weapon)//changes UI and hitbox to match weapon
+    private void SetWeapon(Weapon weapon)//changes UI and hitbox to match weapon
     {
         GameObject.Find("Weapon Image").GetComponent<Image>().sprite = weapon.image;
         GameObject.Find("Weapon Name").GetComponent<TextMeshProUGUI>().text = weapon.weaponName;
@@ -39,20 +39,24 @@ public class Attack : MonoBehaviour
     //can be used for both player and enemy
     public void Pickup()
     {
+        if (nearbyPickup.Length <= 0)//in case player picks up a weapon before the enemy
+        {
+            return;
+        }
         if (NetworkManager.IsHost)
         {
-            if (nearbyPickup.Length > 0)//in case player picks up a weapon before the enemy
-            {
-                //set up weapon in ui
-                SetWeapon(nearbyPickup[0].GetComponent<ItemPickup>().weapon);
-                //remove weapon from world
-                Destroy(nearbyPickup[0].gameObject);
-                //send destruction message to server
-            }
+            ItemPickup pickup = nearbyPickup[0].GetComponent<ItemPickup>();
+            //set up weapon in ui
+            SetWeapon(pickup.weapon);
+            //tell the clients that this player has picked up the weapon
+            pickup.SendPickedUp(player.Identification);
+            //remove weapon from world
+            Destroy(pickup.gameObject);
         }
         else
         {
-            
+            //tell the server that this client wants to pick up the weapon
+            nearbyPickup[0].GetComponent<ItemPickup>().TryPickUp();
         }
         
     }
@@ -112,12 +116,26 @@ public class Attack : MonoBehaviour
         NetworkManager.Singleton.Server.SendToAll(message);
     }
     /// <summary>
-    /// Call to damage a player
+    /// Call damage a player
     /// </summary>
     /// <param name="player">The other player that just got hit</param>
     public void DealDamage(Player player)
     {
         //this instance is the attacker that hit the other player
         //player is the other player that just got hit
+    }
+    [MessageHandler((ushort)MessageIdentification.pickup)]
+    public static void PickuoHandler(Message message)
+    {
+        if (Player.listOfPlayers.TryGetValue(message.GetUShort(), out Player player))
+        {
+            player.GetComponent<Attack>().WeaponPickedUp(message.GetUShort());
+        }
+    }
+    private void WeaponPickedUp(ushort weaponIdentification)
+    {
+        ItemPickup itemPickup = ItemPickup.FindItem(weaponIdentification).GetComponent<ItemPickup>();
+        SetWeapon(itemPickup.weapon);
+        Destroy(itemPickup.gameObject);
     }
 }

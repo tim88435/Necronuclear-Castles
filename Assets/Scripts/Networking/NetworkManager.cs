@@ -16,6 +16,8 @@ public enum MessageIdentification : ushort
     inputs,
     damage,
     itemSpawn,
+    tryPickup,
+    pickup,
 }
 public class NetworkManager : MonoBehaviour
 {
