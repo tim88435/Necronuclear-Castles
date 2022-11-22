@@ -89,10 +89,16 @@ public class Attack : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _weaponCooldown -= Time.deltaTime;
+        _weaponCooldown -= Time.fixedDeltaTime;
         _weaponDuration--;
-        if(_weaponDuration == 0)
+        if(_weaponDuration <= 0)
+        {
             _weaponHitbox.enabled = false;
+            if (player.CurrentPlayerState == PlayerStateIdentification.Attack)
+            {
+                player.CurrentPlayerState = PlayerStateIdentification.Idle;
+            }
+        }
     }
     //turns on weapon hitbox for 10 frames
     public void Swing()
@@ -100,6 +106,7 @@ public class Attack : MonoBehaviour
         if (_weaponCooldown <= 0)
         {
             _weaponHitbox.enabled = true;
+            player.CurrentPlayerState = PlayerStateIdentification.Attack;
             _weaponDuration = 10;
             _weaponCooldown = _weapon.cooldown + 0.2f;//0.2f is 10 frames of fixedupdate
         }
@@ -116,7 +123,7 @@ public class Attack : MonoBehaviour
         NetworkManager.Singleton.Server.SendToAll(message);
     }
     /// <summary>
-    /// Call damage a player
+    /// Call damage a player (for both server and client)
     /// </summary>
     /// <param name="player">The other player that just got hit</param>
     public void DealDamage(Player player)
@@ -125,7 +132,7 @@ public class Attack : MonoBehaviour
         //player is the other player that just got hit
     }
     [MessageHandler((ushort)MessageIdentification.pickup)]
-    public static void PickuoHandler(Message message)
+    public static void PickupHandler(Message message)
     {
         if (Player.listOfPlayers.TryGetValue(message.GetUShort(), out Player player))
         {
