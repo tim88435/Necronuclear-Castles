@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class HP : MonoBehaviour
 {
     [SerializeField] private Image hpBar;
-    [SerializeField] private Player localPlayer;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +15,11 @@ public class HP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        hpBar.fillAmount = Player.Local.health / 10f;
+        //Local player may not spawn in the first few frames
+        //due to the player getting spawned when the server sends the info where each player is spawning
+        if (Player.Local != null)
+        {
+            hpBar.fillAmount = Player.Local.health / 10f;
+        }
     }
 }

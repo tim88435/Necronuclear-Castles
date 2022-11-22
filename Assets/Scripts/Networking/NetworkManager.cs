@@ -53,7 +53,7 @@ public class NetworkManager : MonoBehaviour
         private set
         {
             _serverTick = value;
-            InterpolationTick = value;//(ushort)(value - TicksBetweenPositionUpdates);//updates the interpolation tick
+            InterpolationTick = (ushort)(ServerTick - value);//(ushort)(value - TicksBetweenPositionUpdates);//updates the interpolation tick
         }
     }
     public ushort InterpolationTick { get; private set; }//Client
