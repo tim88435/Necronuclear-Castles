@@ -33,17 +33,17 @@ public class PlayerMovement : MonoBehaviour
         }
         if (NetworkManager.IsHost)
         {
-            Move(joystick.input, _player.joystick2, _player.inputs);
+            Move(_player.joystick1, _player.inputs);//, _player.joystick2
         }
         else
         {
             SendInputs();
         }
     }
-    private void Move(Vector2 inputDirection1, Vector2 inputDirection2, bool[] inputs)
+    private void Move(Vector2 inputDirection1, bool[] inputs)//, Vector2 inputDirection2
     {
-        Debug.Log(inputDirection1);
-        Vector2 moveDirection = inputDirection1 + inputDirection2;
+        //Debug.Log(inputDirection1);
+        Vector2 moveDirection = inputDirection1;// + inputDirection2;
         //block stuff idk @Dez
         _characterController.Move(moveDirection);
         SendMovement();
@@ -74,8 +74,8 @@ public class PlayerMovement : MonoBehaviour
     {
         Message message = Message.Create(MessageSendMode.Unreliable, MessageIdentification.inputs);
         message.AddBools(_player.inputs, false);//buttons
-        message.AddVector3(Vector3.zero);//joystick 1
-        message.AddVector3(Vector3.zero);//joystick 2
+        message.AddVector3(_player.joystick1);//joystick 1
+        //message.AddVector3(_player.joystick2);//joystick 2
         NetworkManager.Singleton.Client.Send(message);
     }
     [MessageHandler((ushort)MessageIdentification.inputs)]
@@ -83,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Player.listOfPlayers.TryGetValue(fromClientIdentification, out Player player))
         {
-            player.SetInputs(message.GetBools(3), message.GetVector3(), message.GetVector3());
+            player.SetInputs(message.GetBools(3), message.GetVector3());//, message.GetVector3()
         }
     }
 }

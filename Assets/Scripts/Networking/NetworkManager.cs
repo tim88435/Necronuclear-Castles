@@ -53,7 +53,7 @@ public class NetworkManager : MonoBehaviour
         private set
         {
             _serverTick = value;
-            InterpolationTick = (ushort)(ServerTick - value);//(ushort)(value - TicksBetweenPositionUpdates);//updates the interpolation tick
+            InterpolationTick = (ushort)(value - TicksBetweenPositionUpdates);//(ushort)(ServerTick - value);// updates the interpolation tick
         }
     }
     public ushort InterpolationTick { get; private set; }//Client
@@ -167,9 +167,9 @@ public class NetworkManager : MonoBehaviour
     }
 
     //Checking Server Activity
-    public void FixedUpdate()//Server
+    public void FixedUpdate()
     {
-        if (IsHost)
+        if (IsHost)//Server
         {
             Server.Update();
             if (CurrentTick % 250 == 0)
@@ -178,13 +178,11 @@ public class NetworkManager : MonoBehaviour
             }
             CurrentTick++;
         }
-        else
+        //client
+        else if (Client != null)
         {
-            if (Client != null)
-            {
-                Client.Update();
-                ServerTick++;
-            }
+            Client.Update();
+            ServerTick++;
         }
     }
     /// <summary>

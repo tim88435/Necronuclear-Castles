@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Riptide;
+
 public enum PlayerStateIdentification
 {
     Idle = 1,
@@ -147,11 +148,11 @@ public class Player : MonoBehaviour
             player.Move(message.GetUShort(), message.GetVector3(), message.GetVector3());
         }
     }
-    public void SetInputs(bool[] inputs, Vector3 joystick1, Vector3 joystick2)
+    public void SetInputs(bool[] inputs, Vector3 joystick1)//, Vector3 joystick2
     {
         this.inputs = inputs;
         this.joystick1 = joystick1;
-        this.joystick2 = joystick2;
+        //this.joystick2 = joystick2;
     }
     /// <summary>
     /// The server sends the message of each player (e.g. who is attacking and blocking)
