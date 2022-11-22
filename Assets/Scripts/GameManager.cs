@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _playerPrefab;
     public GameObject playerPrefab => _playerPrefab;
     public GameObject[] spawnableWeapons;
+    //not static method so that it could be called by unity events in the scene
     public void ChangeScene(int sceneNumber)
     {
         switch (sceneNumber)
@@ -57,7 +58,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-
+    //not static method so that it could be called by unity events in the scene
     public void QuitGame()
     {
         Application.Quit();

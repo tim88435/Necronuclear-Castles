@@ -164,6 +164,8 @@ public class NetworkManager : MonoBehaviour
     private void Disconnected(object sender, DisconnectedEventArgs e)//Client when disconnected after connection established
     {
         ServerTick = 2;
+        //load the main menu
+        GameManager.Singleton.ChangeScene(0);
     }
 
     //Checking Server Activity
@@ -205,6 +207,11 @@ public class NetworkManager : MonoBehaviour
         if (Player.listOfPlayers.TryGetValue(eventArgs.Client.Id, out Player player))
         {
             GameObject.Destroy(player.gameObject);
+        }
+        if (Server.ClientCount <= 0)
+        {
+            Server.Stop();
+            GameManager.Singleton.ChangeScene(0);
         }
     }
     /// <summary>
