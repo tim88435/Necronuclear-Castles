@@ -26,14 +26,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 227046118855316560}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7896588659897208638}
-  m_Father: {fileID: 8163758803407079126}
-  m_RootOrder: 1
+  m_Father: {fileID: 6252771177479173213}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &4729300289552300895
 SphereCollider:
@@ -110,7 +110,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6252771177479173213}
-  - {fileID: 71144986327362852}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -131,6 +130,7 @@ MonoBehaviour:
   nearbyPickup:
   - {fileID: 0}
   _weaponDuration: 0
+  _weaponCooldown: 0
 --- !u!114 &5235311479174314285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,6 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentPlayerStateIdentification: 1
   playerColour: {r: 0, g: 0, b: 0, a: 0}
+  health: 10
   joystick1: {x: 0, y: 0}
   joystick2: {x: 0, y: 0}
   inputs: 000000
@@ -160,8 +161,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afc16522f694a19468ebf825d9700dec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementSpeed: 0
-  _blockSpeed: 0
+  _movementSpeed: 6
+  _blockSpeed: 3
+  TranslationJoystick: {fileID: 0}
+  RotationalJoystick: {fileID: 0}
+  PlayerBody: {fileID: 6252771177479173213}
 --- !u!143 &-3622600984058089805
 CharacterController:
   m_ObjectHideFlags: 0
@@ -224,7 +228,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 71144986327362852}
   m_Father: {fileID: 8163758803407079126}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
