@@ -100,7 +100,7 @@ public class UIManager : MonoBehaviour
 
     public void Jab()
     {
-        localPlayer.GetComponent<Attack>().Swing();
+        Player.Local.GetComponent<Attack>().Swing();
     }
 
     //open pause panel
