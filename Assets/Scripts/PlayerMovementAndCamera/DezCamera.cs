@@ -29,8 +29,16 @@ public class DezCamera : MonoBehaviour
         debugTarget = target;
 
         Vector3 CameraPosition = target + Offset;
+        Vector3 SmoothedPosition;
+        if (NetworkManager.IsHost)
+        {
+            SmoothedPosition = Vector3.Lerp(transform.position, CameraPosition, SmoothSpeed * Time.fixedDeltaTime);
+        }
+        else
+        {
+            SmoothedPosition = Vector3.Lerp(transform.position, CameraPosition, SmoothSpeed * Time.deltaTime);
+        }
 
-        Vector3 SmoothedPosition = Vector3.Lerp( transform.position, CameraPosition, SmoothSpeed * Time.deltaTime );
         transform.position = SmoothedPosition;
     }
 }
