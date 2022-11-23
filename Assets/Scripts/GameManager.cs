@@ -115,7 +115,7 @@ public class GameManager : MonoBehaviour
             Debug.Log($"Index {index} is negative");
             return null;
         }
-        if (Singleton.spawnableWeapons.Length > index)
+        if (Singleton.spawnableWeapons.Length <= index)
         {
             Debug.Log($"Set weapon at index {index} not found");
             return null;
