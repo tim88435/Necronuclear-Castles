@@ -50,9 +50,10 @@ public class Player : MonoBehaviour
     private Interpolator _interpolator;
     private Attack attackScript;
     public float health = 10;//10 is maximum health
-    public Vector2 joystick1;//last input from client
-    public Vector2 joystick2;//last input from client
+    //public Vector2 joystick1;//last input from client
+    //public Vector2 joystick2;//last input from client
     public bool[] inputs = new bool[3];//last inputs from client
+    public PlayerMovement playerMovement;
     public static void Spawn(ushort identification, string username, Vector3 position)//for each client when a new client joins
     {
         if (listOfPlayers.ContainsKey(identification))
@@ -75,6 +76,7 @@ public class Player : MonoBehaviour
         Player.username = username;
         Player._interpolator = Player.GetComponent<Interpolator>();
         Player.attackScript = Player.GetComponent<Attack>();
+        Player.playerMovement = Player.GetComponent<PlayerMovement>();
         Player.Identification = identification;
         listOfPlayers.Add(identification, Player);
     }
@@ -88,6 +90,7 @@ public class Player : MonoBehaviour
         Player.name = $"Player {identification}({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
         Player.Identification = identification;
         Player.IsLocal = identification == 0;
+        Player.playerMovement = Player.GetComponent<PlayerMovement>();
         Player.username = string.IsNullOrEmpty(username) ? "Guest" : username;
         if (ColorUtility.TryParseHtmlString(skin, out Color colour))
         {
@@ -148,10 +151,10 @@ public class Player : MonoBehaviour
             player.Move(message.GetUShort(), message.GetVector3(), message.GetVector3());
         }
     }
-    public void SetInputs(bool[] inputs, Vector3 joystick1)//, Vector3 joystick2
+    public void SetInputs(bool[] inputs)//, Vector3 joystick1, Vector3 joystick2
     {
         this.inputs = inputs;
-        this.joystick1 = joystick1;
+        //this.joystick1 = joystick1;
         //this.joystick2 = joystick2;
     }
     /// <summary>

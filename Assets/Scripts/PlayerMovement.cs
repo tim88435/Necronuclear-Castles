@@ -115,7 +115,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Message message = Message.Create(MessageSendMode.Unreliable, MessageIdentification.inputs);
         message.AddBools(_player.inputs, false);//buttons
-        message.AddVector3(_player.joystick1);//joystick 1
+        message.AddVector3(TranslationJoystick.input);//joystick 1
         //message.AddVector3(_player.joystick2);//joystick 2
         NetworkManager.Singleton.Client.Send(message);
     }
@@ -124,7 +124,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Player.listOfPlayers.TryGetValue(fromClientIdentification, out Player player))
         {
-            player.SetInputs(message.GetBools(3), message.GetVector3());//, message.GetVector3()
+            player.SetInputs(message.GetBools(3));//, message.GetVector3(), message.GetVector3()
+            player.playerMovement._inputMovement = message.GetVector3();
         }
     }
 }
