@@ -50,7 +50,6 @@ public class PlayerMovement : MonoBehaviour
             _camera = Camera.main.GetComponent<DezCamera>();
             if ( _camera != null )
             {
-                Debug.LogWarning( _camera );
                 _camera.PlayerBody = PlayerBody;
             }
             SetInput(RotationalJoystick.input, TranslationJoystick.input);
@@ -70,7 +69,10 @@ public class PlayerMovement : MonoBehaviour
         _moveDirection = _inputMovement * _movementSpeed * Time.fixedDeltaTime;
         _controller.Move( _moveDirection );
         //_controller.transform.rotation = Quaternion.LookRotation( _inputRotation );
-        PlayerBody.rotation = Quaternion.LookRotation( _inputRotation );
+        if (_player.IsLocal)
+        {
+            PlayerBody.rotation = Quaternion.LookRotation(_inputRotation);
+        }
         SendMovement();
     }
     private void Move(Vector2 inputDirection1, bool[] inputs)//, Vector2 inputDirection2
