@@ -18,10 +18,10 @@ public class DezCamera : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
-    }
-    private void LateUpdate()
-    {
+        if (!NetworkManager.IsHost)
+        {
+            return;
+        }
         Vector3 target = PlayerBody.position + (PlayerBody.forward * Distance); //target is right infront of the player * distance
         //target.y = PlayerBody.position.y; //this just makes it so the target is always at the players level, really not needed but i feel like i need to put it here anyway
         //target = transform.TransformVector(target);
@@ -30,15 +30,24 @@ public class DezCamera : MonoBehaviour
 
         Vector3 CameraPosition = target + Offset;
         Vector3 SmoothedPosition;
+        SmoothedPosition = Vector3.Lerp(transform.position, CameraPosition, SmoothSpeed * Time.fixedDeltaTime);
+        transform.position = SmoothedPosition;
+    }
+    private void LateUpdate()
+    {
         if (NetworkManager.IsHost)
         {
-            SmoothedPosition = Vector3.Lerp(transform.position, CameraPosition, SmoothSpeed * Time.fixedDeltaTime);
+            return;
         }
-        else
-        {
-            SmoothedPosition = Vector3.Lerp(transform.position, CameraPosition, SmoothSpeed * Time.deltaTime);
-        }
+        Vector3 target = PlayerBody.position + (PlayerBody.forward * Distance); //target is right infront of the player * distance
+        //target.y = PlayerBody.position.y; //this just makes it so the target is always at the players level, really not needed but i feel like i need to put it here anyway
+        //target = transform.TransformVector(target);
 
+        debugTarget = target;
+
+        Vector3 CameraPosition = target + Offset;
+        Vector3 SmoothedPosition;
+        SmoothedPosition = Vector3.Lerp(transform.position, CameraPosition, SmoothSpeed * Time.deltaTime);
         transform.position = SmoothedPosition;
     }
 }
