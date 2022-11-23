@@ -108,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
         message.AddUShort(_player.Identification);
         message.AddUShort(NetworkManager.Singleton.CurrentTick);
         message.AddVector3(transform.position);
-        message.AddVector3(transform.forward);
+        message.AddVector3(PlayerBody.forward);
         NetworkManager.Singleton.Server.SendToAll(message);
     }
     private void SendInputs()
