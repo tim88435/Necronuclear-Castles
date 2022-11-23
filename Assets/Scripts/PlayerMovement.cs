@@ -4,53 +4,91 @@ using UnityEngine;
 using Riptide;
 public class PlayerMovement : MonoBehaviour
 {
+    private Vector3 _inputMovement, _inputRotation;
+    private Vector3 _moveDirection = Vector3.zero;
+
+
+    [SerializeField] private float _movementSpeed = 6f;
+    [SerializeField] private float _blockSpeed = 3f;
+    [SerializeField] private Joystick TranslationJoystick;
+    [SerializeField] private Joystick RotationalJoystick; 
+
+    public Transform PlayerBody;
     private Player _player;
-    private CharacterController _characterController;
-    [SerializeField] private float _movementSpeed;
-    [SerializeField] private float _blockSpeed;
-    [SerializeField] private Joystick joystick;
+    private CharacterController _controller;
+    private DezCamera _camera;
     //[SerializeField] private Joystick joystick2;
+
+
     private void OnEnable()
     {
-        if (_characterController == null)
+        if ( GetComponent<CharacterController>() == null )
         {
-            _characterController = GetComponent<CharacterController>();
+            Debug.LogError( "There is no character controller on the player object" );
+        }
+        else
+        {
+            _controller = GetComponent<CharacterController>();
         }
         if (_player == null)
         {
             _player = GetComponent<Player>();
         }
-        if (joystick == null)
+        if (TranslationJoystick == null)
         {
-            joystick = GameObject.Find("Joystick Panel").GetComponent<Joystick>();
+            TranslationJoystick = GameObject.Find("Joystick Panel").GetComponent<Joystick>();
+        }
+        if ( RotationalJoystick == null )
+        {
+            RotationalJoystick = GameObject.Find( "Joystick Panel" ).GetComponent<Joystick>();
         }
     }
     private void FixedUpdate()
     {
         if (_player.IsLocal)
         {
-            SetInput(joystick.input);
+            _camera = Camera.main.GetComponent<DezCamera>();
+            if ( _camera != null )
+            {
+                Debug.LogWarning( _camera );
+                _camera.PlayerBody = PlayerBody;
+            }
+            SetInput(RotationalJoystick.input, TranslationJoystick.input);
         }
         if (NetworkManager.IsHost)
         {
-            Move(_player.joystick1, _player.inputs);//, _player.joystick2
+            //Move(_player.joystick1, _player.inputs);//, _player.joystick2
+            JoystickMovement();
         }
         else
         {
             SendInputs();
         }
     }
+    private void JoystickMovement()
+    {
+        _moveDirection = _inputMovement * _movementSpeed * Time.fixedDeltaTime;
+        _controller.Move( _moveDirection );
+        //_controller.transform.rotation = Quaternion.LookRotation( _inputRotation );
+        PlayerBody.rotation = Quaternion.LookRotation( _inputRotation );
+    }
     private void Move(Vector2 inputDirection1, bool[] inputs)//, Vector2 inputDirection2
     {
         //Debug.Log(inputDirection1);
         Vector2 moveDirection = inputDirection1;// + inputDirection2;
         //block stuff idk @Dez
-        _characterController.Move(moveDirection);
+        _controller.Move(moveDirection);
         SendMovement();
     }
-    public void SetInput(Vector2 input)
+    public void SetInput(Vector2 RotationInput, Vector2 TranslationInput)
     {
-        _player.joystick1 = input;
+        //_player.joystick1 = input;
+        _inputMovement = new Vector3( TranslationJoystick.input.x, 0, TranslationJoystick.input.y );
+        if ( RotationalJoystick.InputUpdate )
+        {
+            _inputRotation = new Vector3( RotationalJoystick.input.x, 0, RotationalJoystick.input.y );
+        }
+
     }
     /*public void SetInput(Vector2 input, Vector2 input2)
     {
