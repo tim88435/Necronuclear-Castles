@@ -10,28 +10,18 @@ public class ItemPickup : MonoBehaviour
     private ushort key;
     public Weapon weapon;
     private bool serverSpawned = false;
-    // Start is called before the first frame update
-    void OnEnable()
+    void Start()
     {
         if (NetworkManager.IsHost)
         {
             weaponList.Add((ushort)gameObject.GetInstanceID(), gameObject);
             key = (ushort)gameObject.GetInstanceID();
             serverSpawned = true;
-            //Debug.Log(weaponList.Count);
+            SendSpawnedItem();
         }
         else if (!serverSpawned)
         {
             Destroy(gameObject);
-        }
-    }
-
-    // Update is called once per frame
-    void Start()
-    {
-        if (NetworkManager.IsHost)
-        {
-            SendSpawnedItem();
         }
     }
     private void SendSpawnedItem()
