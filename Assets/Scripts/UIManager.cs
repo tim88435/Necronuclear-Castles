@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,23 +21,6 @@ public class UIManager : MonoBehaviour
     private GameObject _pickupButton;
     public GameObject PickupButton { get => _pickupButton; set { _pickupButton = value; } }
 
-    private GameObject _attackButton;
-    
-    public GameObject AttackButton { get => _attackButton; set { _attackButton = value; } }
-
-    private GameObject _jabButton;
-    
-    public GameObject JabButton { get => _jabButton; set {_jabButton = value; } }
-
-    private GameObject _pauseButton;
-    public GameObject PauseButton { get => _pauseButton; set { _pauseButton = value; } }
-
-    private GameObject _continueButton;
-    public GameObject ContinueButton { get => _continueButton; set { _continueButton = value; } }
-
-    private GameObject _quitButton;
-    public GameObject QuitButton { get => _quitButton; set { _quitButton = value; } }
-
     private GameObject _pausePanel;
     public GameObject PausePanel { get => _pausePanel; set { _pausePanel = value; } }
 
@@ -54,7 +38,7 @@ public class UIManager : MonoBehaviour
             else if (_singleton != value)
             {
                 Debug.LogWarning($"{typeof(UIManager)} already exists in the current scene!\nRemoving Duplicate");
-                DestroyImmediate(value);
+                DestroyImmediate(value.gameObject);
             }
         }
     }
@@ -62,6 +46,10 @@ public class UIManager : MonoBehaviour
     void Awake()
     {
         Singleton = this;//singleton stuff
+    }
+
+    private void Start()
+    {
         DontDestroyOnLoad(gameObject);
         //load games won regkey, if no key then generate one
         if (PlayerPrefs.HasKey("gamesWon"))
@@ -72,9 +60,8 @@ public class UIManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("gamesWon", 0);
         }
-        
     }
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -109,6 +96,11 @@ public class UIManager : MonoBehaviour
     public void Attack()
     {
         Player.Local.GetComponent<Attack>().Swing();
+    }
+
+    public void Jab()
+    {
+        localPlayer.GetComponent<Attack>().Swing();
     }
 
     //open pause panel
