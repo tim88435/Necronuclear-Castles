@@ -125,7 +125,8 @@ public class PlayerMovement : MonoBehaviour
         if (Player.listOfPlayers.TryGetValue(fromClientIdentification, out Player player))
         {
             player.SetInputs(message.GetBools(3));//, message.GetVector3(), message.GetVector3()
-            player.playerMovement._inputMovement = message.GetVector3();
+            Vector3 input = message.GetVector3();
+            player.playerMovement._inputMovement = new Vector3(input.x, 0, input.y);
         }
     }
 }
