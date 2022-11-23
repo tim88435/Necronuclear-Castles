@@ -65,6 +65,7 @@ public class Player : MonoBehaviour
             Player = Instantiate(GameManager.Singleton.playerPrefab, Vector3.up, Quaternion.identity).GetComponent<Player>();
             Player.IsLocal = true;
             Local = Player;
+            //get main camera
         }
         else
         {
@@ -87,7 +88,11 @@ public class Player : MonoBehaviour
         Player Player = Instantiate(GameManager.Singleton.playerPrefab, Vector3.up, Quaternion.identity).GetComponent<Player>();
         Player.name = $"Player {identification}({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
         Player.Identification = identification;
-        Player.IsLocal = identification == 0;
+        if (identification == 0)
+        {
+            Player.IsLocal = identification == 0;
+            //get main camera
+        }
         Player.username = string.IsNullOrEmpty(username) ? "Guest" : username;
         if (ColorUtility.TryParseHtmlString(skin, out Color colour))
         {
