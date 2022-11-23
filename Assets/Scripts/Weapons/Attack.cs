@@ -28,9 +28,13 @@ public class Attack : MonoBehaviour
 
     private void SetWeapon(Weapon weapon)//changes UI and hitbox to match weapon
     {
-        GameObject.Find("Weapon Image").GetComponent<Image>().sprite = weapon.image;
-        GameObject.Find("Weapon Name").GetComponent<TextMeshProUGUI>().text = weapon.weaponName;
+        if (player.IsLocal)
+        {
+            GameObject.Find("Weapon Image").GetComponent<Image>().sprite = weapon.image;
+            GameObject.Find("Weapon Name").GetComponent<TextMeshProUGUI>().text = weapon.weaponName;
+        }
         _weaponHitbox.radius = weapon.length;
+        //MICHAEL STOP USING FIND IT GETS THE SAME GAMEOBJECT TWICE AND SETS THE HOST PLAYER'S WEAPON AS BOTH PLAYER'S WEAPON MODEL
         GameObject model = GameObject.Find("Weapon Model");
         model.GetComponent<MeshFilter>().mesh = weapon.model;
         model.GetComponent<MeshRenderer>().material = weapon.skin;
