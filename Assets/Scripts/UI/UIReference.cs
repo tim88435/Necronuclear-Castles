@@ -15,12 +15,6 @@ public class UIReference : MonoBehaviour
         UIManager.Singleton.PausePanel = GameObject.Find("Pause Panel");
         UIManager.Singleton.PausePanel.SetActive(false);
     }
-
-    private void Start()
-    {
-        //forces ui to get local player
-        UIManager.Singleton.GetLocalPlayer();
-    }
     
     //more listener event testing
     public void PickUpButton()
