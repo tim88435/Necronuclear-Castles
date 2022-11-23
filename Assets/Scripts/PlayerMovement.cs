@@ -71,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
         _controller.Move( _moveDirection );
         //_controller.transform.rotation = Quaternion.LookRotation( _inputRotation );
         PlayerBody.rotation = Quaternion.LookRotation( _inputRotation );
+        SendMovement();
     }
     private void Move(Vector2 inputDirection1, bool[] inputs)//, Vector2 inputDirection2
     {
