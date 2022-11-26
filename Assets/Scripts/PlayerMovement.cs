@@ -69,10 +69,7 @@ public class PlayerMovement : MonoBehaviour
         _moveDirection = _inputMovement * _movementSpeed * Time.fixedDeltaTime;
         _controller.Move( _moveDirection );
         //_controller.transform.rotation = Quaternion.LookRotation( _inputRotation );
-        if (_player.IsLocal)
-        {
-            PlayerBody.rotation = Quaternion.LookRotation(_inputRotation);
-        }
+        PlayerBody.rotation = Quaternion.LookRotation(_inputRotation);
         SendMovement();
     }
     private void Move(Vector2 inputDirection1, bool[] inputs)//, Vector2 inputDirection2
@@ -127,6 +124,10 @@ public class PlayerMovement : MonoBehaviour
             player.SetInputs(message.GetBools(3));//, message.GetVector3(), message.GetVector3()
             Vector3 input = message.GetVector3();
             player.playerMovement._inputMovement = new Vector3(input.x, 0, input.y);
+            if (input != Vector3.zero)
+            {//if there isn't any ipduts, don't update the rotation
+                player.playerMovement._inputRotation = player.playerMovement._inputMovement;//input movement is rotation for now
+            }
         }
     }
 }

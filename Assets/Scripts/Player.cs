@@ -138,7 +138,7 @@ public class Player : MonoBehaviour
     {
         //transform.position = newPosition;
         _interpolator.NewUpdate(tick, newPosition);
-        transform.forward = forward;
+        playerMovement.PlayerBody.forward = forward;
         /*if (!isLocal)
         {
             cameraTransform.forward = forward;

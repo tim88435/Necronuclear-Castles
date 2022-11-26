@@ -22,6 +22,11 @@ public class DezCamera : MonoBehaviour
         {
             return;
         }
+        //if it is still the first few frames where the clinet player hasn't spanwed yet, don't update the camera
+        if (PlayerBody == null)
+        {
+            return;
+        }
         Vector3 target = PlayerBody.position + (PlayerBody.forward * Distance); //target is right infront of the player * distance
         //target.y = PlayerBody.position.y; //this just makes it so the target is always at the players level, really not needed but i feel like i need to put it here anyway
         //target = transform.TransformVector(target);
@@ -36,6 +41,11 @@ public class DezCamera : MonoBehaviour
     private void LateUpdate()
     {
         if (NetworkManager.IsHost)
+        {
+            return;
+        }
+        //if it is still the first few frames where the clinet player hasn't spanwed yet, don't update the camera
+        if (PlayerBody == null)
         {
             return;
         }

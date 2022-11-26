@@ -10,6 +10,7 @@ public class Attack : MonoBehaviour
     [SerializeField] private SphereCollider _weaponHitbox;
     [SerializeField] private Weapon _weapon;//default is fist
     private Player player;
+    [SerializeField] private GameObject weaponModel;
 
     [SerializeField] private Collider[] nearbyPickup;
 
@@ -34,10 +35,11 @@ public class Attack : MonoBehaviour
             GameObject.Find("Weapon Name").GetComponent<TextMeshProUGUI>().text = weapon.weaponName;
         }
         _weaponHitbox.radius = weapon.length;
+        _weapon = weapon;
         //MICHAEL STOP USING FIND IT GETS THE SAME GAMEOBJECT TWICE AND SETS THE HOST PLAYER'S WEAPON AS BOTH PLAYER'S WEAPON MODEL
-        GameObject model = GameObject.Find("Weapon Model");
-        model.GetComponent<MeshFilter>().mesh = weapon.model;
-        model.GetComponent<MeshRenderer>().material = weapon.skin;
+        //GameObject model = GameObject.Find("Weapon Model");
+        weaponModel.GetComponent<MeshFilter>().mesh = weapon.model;
+        weaponModel.GetComponent<MeshRenderer>().material = weapon.skin;
     }
 
     //can be used for both player and enemy

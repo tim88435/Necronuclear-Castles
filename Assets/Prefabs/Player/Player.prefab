@@ -127,6 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponHitbox: {fileID: 4729300289552300895}
   _weapon: {fileID: 11400000, guid: 99d69d75862850048b62d234de37f0fd, type: 2}
+  weaponModel: {fileID: 8068805000545735863}
   nearbyPickup:
   - {fileID: 0}
   _weaponDuration: 0
@@ -146,9 +147,8 @@ MonoBehaviour:
   _currentPlayerStateIdentification: 1
   playerColour: {r: 0, g: 0, b: 0, a: 0}
   health: 10
-  joystick1: {x: 0, y: 0}
-  joystick2: {x: 0, y: 0}
   inputs: 000000
+  playerMovement: {fileID: 0}
 --- !u!114 &3031928878736440489
 MonoBehaviour:
   m_ObjectHideFlags: 0

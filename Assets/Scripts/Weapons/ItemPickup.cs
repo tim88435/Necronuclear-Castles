@@ -7,7 +7,7 @@ using System;
 public class ItemPickup : MonoBehaviour
 {
     public static Dictionary<ushort, GameObject> weaponList = new Dictionary<ushort, GameObject>();
-    private ushort key;
+    [SerializeField] private ushort key;
     public Weapon weapon;
     private bool serverSpawned = false;
     void Start()
@@ -48,8 +48,9 @@ public class ItemPickup : MonoBehaviour
         ItemPickup newPickup = newWeapon.GetComponent<ItemPickup>();
         newPickup.key = itemKey;
         newPickup.serverSpawned = true;
+        weaponList.Add(itemKey, newWeapon);
     }
-    //finds and returns weapon with weapon name
+    //finds and returns weapon with weapon GameObject
     public static GameObject FindItem(ushort ID)
     {
         if (weaponList.ContainsKey(ID))
@@ -57,7 +58,6 @@ public class ItemPickup : MonoBehaviour
             return weaponList[ID];
         }
         //if item not found
-        Debug.LogWarning($"Weapon with id {ID} not found in the scene");
         return null;
     }
     //Client message to server saying that they want to try pick up the nearest weapon
