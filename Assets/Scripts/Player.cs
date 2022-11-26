@@ -91,6 +91,7 @@ public class Player : MonoBehaviour
         Player.name = $"Player {identification}({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
         Player.Identification = identification;
         Player.IsLocal = identification == 0;
+        Player.attackScript = Player.GetComponent<Attack>();
         Player.playerMovement = Player.GetComponent<PlayerMovement>();
         Player.username = string.IsNullOrEmpty(username) ? "Guest" : username;
         if (ColorUtility.TryParseHtmlString(skin, out Color colour))
@@ -198,7 +199,7 @@ public class Player : MonoBehaviour
     /// Client message hanlder to show the player that they took damage
     /// </summary>
     [MessageHandler((ushort)MessageIdentification.damage)]
-    private static void GetDamage(Message message)
+    public static void GetDamage(Message message)
     {
         if (listOfPlayers.TryGetValue(message.GetUShort(), out Player playerAttacked))
         {

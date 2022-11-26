@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
             else if (_singleton != value)
             {
                 Debug.LogWarning($"{typeof(UIManager)} already exists in the current scene!\nRemoving Duplicate");
-                DestroyImmediate(value.gameObject);
+                Destroy(value.gameObject);
             }
         }
     }

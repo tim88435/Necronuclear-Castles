@@ -136,6 +136,7 @@ public class Attack : MonoBehaviour
     {
         //this instance is the attacker that hit the other player
         //player is the other player that just got hit
+        player.health -= _weapon.damage;
     }
     [MessageHandler((ushort)MessageIdentification.pickup)]
     public static void PickupHandler(Message message)
