@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
     //public Vector2 joystick2;//last input from client
     public bool[] inputs = new bool[3];//last inputs from client
     public PlayerMovement playerMovement;
-    public static void Spawn(ushort identification, string username, Vector3 position)//for each client when a new client joins
+    public static void Spawn(ushort identification, string username, Vector3 position, string skin)//for each client when a new client joins
     {
         if (listOfPlayers.ContainsKey(identification))
         {
@@ -75,6 +75,11 @@ public class Player : MonoBehaviour
         }
         Player.name = $"Player {identification}({(string.IsNullOrEmpty(username) ? "Guest" : username)})";
         Player.username = username;
+        if (ColorUtility.TryParseHtmlString(skin, out Color colour))
+        {
+            Player.playerColour = colour;
+            Player.GetComponentInChildren<Renderer>().material.color = colour;
+        }
         Player._interpolator = Player.GetComponent<Interpolator>();
         Player.attackScript = Player.GetComponent<Attack>();
         Player.playerMovement = Player.GetComponent<PlayerMovement>();
@@ -96,7 +101,7 @@ public class Player : MonoBehaviour
         Player.username = string.IsNullOrEmpty(username) ? "Guest" : username;
         if (ColorUtility.TryParseHtmlString(skin, out Color colour))
         {
-            //Player.playerColour = colour;
+            Player.playerColour = colour;
             Player.GetComponentInChildren<Renderer>().material.color = colour;
         }
         Player.SendSpawned();//send info on new player to all other players
@@ -115,7 +120,7 @@ public class Player : MonoBehaviour
         message.AddUShort(Identification);
         message.AddString(username);
         message.AddVector3(transform.position);
-        message.AddString(ColorUtility.ToHtmlStringRGB(playerColour));
+        message.AddString("#" + ColorUtility.ToHtmlStringRGB(playerColour));
         return message;
     }
     private void OnDestroy()
@@ -133,7 +138,7 @@ public class Player : MonoBehaviour
     [MessageHandler((ushort)MessageIdentification.playerSpawned)]
     public static void SpawnPlayer(Message message)
     {
-        Spawn(message.GetUShort(), message.GetString(), message.GetVector3());
+        Spawn(message.GetUShort(), message.GetString(), message.GetVector3(), message.GetString());
     }
     private void Move(ushort tick, Vector3 newPosition, Vector3 forward)
     {

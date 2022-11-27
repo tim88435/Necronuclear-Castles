@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                SpawnPlayer(" ");//name is blank now, name to be set later in dev
+                SpawnPlayer(" ", UIManager.Singleton.PlayerSkin);//name is blank now, name to be set later in dev
             }
         }
     }
@@ -101,11 +101,11 @@ public class GameManager : MonoBehaviour
     {
         Singleton.ChangeScene(1);
     }
-    private void SpawnPlayer(string name)
+    private void SpawnPlayer(string name, string colour)
     {
         Message message = Message.Create(MessageSendMode.Reliable, (ushort)MessageIdentification.spawn);
         message.AddString(name);
-        message.AddString(UIManager.Singleton.PlayerSkin);
+        message.AddString(colour);
         NetworkManager.Singleton.Client.Send(message);
     }
     public static GameObject GetWeapon(ushort index)
