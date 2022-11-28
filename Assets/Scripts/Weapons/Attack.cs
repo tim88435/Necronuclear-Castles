@@ -123,6 +123,7 @@ public class Attack : MonoBehaviour
     /// <param name="otherPlayer">Player that has gotten hit</param>
     public void SendHit(Player otherPlayer)
     {
+        Debug.Log("Attack message sent");
         Message message = Message.Create(MessageSendMode.Reliable, MessageIdentification.damage);
         message.AddUShort(player.Identification);//player who hit
         message.AddUShort(otherPlayer.Identification);//player who got hit

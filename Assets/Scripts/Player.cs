@@ -211,6 +211,7 @@ public class Player : MonoBehaviour
         {
             if (listOfPlayers.TryGetValue(message.GetUShort(), out Player playerHit))
             {
+                Debug.Log("Attack message received");
                 if (message.GetUShort() == (ushort)PlayerStateIdentification.Attack) //if player was attacking
                 {
                     playerAttacked.attackScript.DealDamage(playerHit);
