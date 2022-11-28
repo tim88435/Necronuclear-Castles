@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Riptide;
+using System.Linq;
 
 public enum PlayerStateIdentification
 {
@@ -212,6 +213,19 @@ public class Player : MonoBehaviour
             {
                 playerAttacked.attackScript.DealDamage(playerHit);
             }
+        }
+    }
+    public void Kill()
+    {
+        listOfPlayers.Remove(Identification);
+        if (IsLocal)
+        {
+            Camera.main.GetComponent<DezCamera>().PlayerBody = listOfPlayers.ElementAt(0).Value.transform.GetChild(0);
+        }
+        GameObject.Destroy(gameObject);
+        if (listOfPlayers.Count <= 0)
+        {
+            UIManager.Singleton.EndGame(listOfPlayers.ContainsKey(Player.Local.Identification));
         }
     }
 }

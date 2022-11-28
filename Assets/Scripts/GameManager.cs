@@ -41,6 +41,17 @@ public class GameManager : MonoBehaviour
         switch (sceneNumber)
         {
             case 0://Main Menu
+                if (NetworkManager.Singleton != null)
+                {
+                    if (NetworkManager.Singleton.Server.IsRunning)
+                    {
+                        NetworkManager.Singleton.Server.Stop();
+                    }
+                    else if (NetworkManager.Singleton.Client.IsConnected)
+                    {
+                        NetworkManager.Singleton.Client.Disconnect();
+                    }
+                }
                 CurrentGameState = GameState.MainMenu;
                 SceneManager.LoadScene(0);
                 break;
