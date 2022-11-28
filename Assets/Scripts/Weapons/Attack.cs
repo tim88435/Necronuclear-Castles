@@ -137,6 +137,8 @@ public class Attack : MonoBehaviour
             player.CurrentPlayerState = jab ? PlayerStateIdentification.Jab : PlayerStateIdentification.Attack;
             _weaponDuration = 10;
             _weaponCooldown = _weapon.cooldown + 0.2f;//0.2f is 10 frames of fixedupdate
+            player.inputs[1] = false;
+            player.inputs[2] = false;
         }
     }
     
