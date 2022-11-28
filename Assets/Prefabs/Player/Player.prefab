@@ -88,7 +88,6 @@ GameObject:
   - component: {fileID: 2994800964813897359}
   - component: {fileID: 3013942500565962305}
   - component: {fileID: 227533363986289743}
-  - component: {fileID: 2481831259308110760}
   m_Layer: 0
   m_Name: Player direction
   m_TagString: Untagged
@@ -161,20 +160,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2481831259308110760
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4815872743598417202}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &5358224379656461018
 GameObject:
   m_ObjectHideFlags: 0
