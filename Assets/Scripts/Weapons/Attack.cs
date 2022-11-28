@@ -176,7 +176,7 @@ public class Attack : MonoBehaviour
     public void KnockBack(Player player)
     {
         float blockMult = player.CurrentPlayerState == PlayerStateIdentification.Block ? 0.2f : 1;
-        player.GetComponent<CharacterController>().Move(transform.forward * _weapon.damage * blockMult); //moves other player in player direction
+        player.GetComponent<CharacterController>().Move(transform.GetChild(0).forward * _weapon.damage * blockMult); //moves other player in player direction
     }
     
     [MessageHandler((ushort)MessageIdentification.pickup)]
