@@ -96,12 +96,12 @@ public class UIManager : MonoBehaviour
     //for button & testing, player attacks
     public void Attack()
     {
-        Player.Local.GetComponent<Attack>().Swing();
+        Player.Local.GetComponent<Attack>().Swing(false);
     }
 
     public void Jab()
     {
-        Player.Local.GetComponent<Attack>().Swing();
+        Player.Local.GetComponent<Attack>().Swing(true);
     }
 
     //open pause panel

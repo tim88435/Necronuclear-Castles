@@ -98,23 +98,25 @@ public class Attack : MonoBehaviour
         if(_weaponDuration <= 0)
         {
             _weaponHitbox.enabled = false;
-            if (player.CurrentPlayerState == PlayerStateIdentification.Attack)
+            if (player.CurrentPlayerState == PlayerStateIdentification.Attack || player.CurrentPlayerState == PlayerStateIdentification.Jab)
             {
                 player.CurrentPlayerState = PlayerStateIdentification.Idle;
             }
         }
     }
     //turns on weapon hitbox for 10 frames
-    public void Swing()
+    //jab bool means if attack is jab or not
+    public void Swing(bool jab)
     {
         if (_weaponCooldown <= 0)
         {
             _weaponHitbox.enabled = true;
-            player.CurrentPlayerState = PlayerStateIdentification.Attack;
+            player.CurrentPlayerState = jab ? PlayerStateIdentification.Jab : PlayerStateIdentification.Attack;
             _weaponDuration = 10;
             _weaponCooldown = _weapon.cooldown + 0.2f;//0.2f is 10 frames of fixedupdate
         }
     }
+    
     /// <summary>
     /// Send the information to the players (from ther server) that a player has gotten hit by this player
     /// </summary>
@@ -124,6 +126,8 @@ public class Attack : MonoBehaviour
         Message message = Message.Create(MessageSendMode.Reliable, MessageIdentification.damage);
         message.AddUShort(player.Identification);//player who hit
         message.AddUShort(otherPlayer.Identification);//player who got hit
+        message.AddUShort((ushort)player.CurrentPlayerState);//if player is attacking or jabbing
+        message.AddBool(otherPlayer.CurrentPlayerState == PlayerStateIdentification.Block);//if other player is blocking or not
         NetworkManager.Singleton.Server.SendToAll(message);
     }
     /// <summary>
@@ -136,6 +140,14 @@ public class Attack : MonoBehaviour
         //player is the other player that just got hit
         player.health -= _weapon.damage;
     }
+
+    //knockbacks other player in direction
+    //player is other player
+    public void KnockBack(Player player, float distance)
+    {
+        player.transform.Translate(transform.forward * distance);//moves other player in player direction
+    }
+    
     [MessageHandler((ushort)MessageIdentification.pickup)]
     public static void PickupHandler(Message message)
     {
