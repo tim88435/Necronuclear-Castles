@@ -24,11 +24,13 @@ public class UIReference : MonoBehaviour
 
     public void AttackButton()
     {
+        Debug.Log("Attack button pressed");
         UIManager.Singleton.SendMessage("Attack", SendMessageOptions.DontRequireReceiver);
     }
 
     public void JabButton()
     {
+        Debug.Log("Jab button pressed");
         UIManager.Singleton.SendMessage("Jab", SendMessageOptions.DontRequireReceiver);
     }
 
