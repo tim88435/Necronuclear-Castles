@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8422294e7971864a8de835c3b8a49e6, type: 3}
   m_Name: Pipe
   m_EditorClassIdentifier: 
-  damage: 2
+  damage: 3
   cooldown: 2
   length: 3
   model: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}

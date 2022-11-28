@@ -41,10 +41,6 @@ public class GameManager : MonoBehaviour
         switch (sceneNumber)
         {
             case 0://Main Menu
-                if (CurrentGameState == GameState.MainMenu)
-                {
-                    break;
-                }
                 if (NetworkManager.Singleton != null)
                 {
                     NetworkManager.Singleton.CloseServer();
@@ -55,6 +51,10 @@ public class GameManager : MonoBehaviour
                             NetworkManager.Singleton.Client.Disconnect();
                         }
                     }
+                }
+                if (CurrentGameState == GameState.MainMenu)
+                {
+                    break;
                 }
                 CurrentGameState = GameState.MainMenu;
                 //Removes the gameobject with the managers
