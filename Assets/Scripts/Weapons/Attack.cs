@@ -36,7 +36,6 @@ public class Attack : MonoBehaviour
         }
         _weaponHitbox.radius = weapon.length;
         _weapon = weapon;
-        //GameObject model = GameObject.Find("Weapon Model");
         weaponModel.GetComponent<MeshFilter>().mesh = weapon.model;
         weaponModel.GetComponent<MeshRenderer>().material = weapon.skin;
     }
@@ -136,10 +135,6 @@ public class Attack : MonoBehaviour
         //this instance is the attacker that hit the other player
         //player is the other player that just got hit
         player.health -= _weapon.damage;
-        if (player.health <= 0)//if the player is dead
-        {
-            player.Kill();
-        }
     }
     [MessageHandler((ushort)MessageIdentification.pickup)]
     public static void PickupHandler(Message message)
