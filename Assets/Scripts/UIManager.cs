@@ -80,7 +80,14 @@ public class UIManager : MonoBehaviour
 
     public void EndGame(bool won)//use this when game ends, increases games won if the player wins
     {
-        StartCoroutine(GameManager.Singleton.EndGame());
+        if (NetworkManager.IsHost)
+        {
+            StartCoroutine(GameManager.Singleton.EndGame());
+        }
+        else
+        {
+            GameManager.Singleton.ChangeScene(0);
+        }
         if (won)
         {
             PlayerPrefs.SetInt("gamesWon", gamesWon + 1);
