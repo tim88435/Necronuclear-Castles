@@ -95,6 +95,14 @@ public class Attack : MonoBehaviour
     {
         if (NetworkManager.IsHost)
         {
+            if (player.inputs[2])
+            {
+                Swing(true);
+            }
+            else if (player.inputs[1])
+            {
+                Swing(false);
+            }
             _weaponCooldown -= Time.fixedDeltaTime;
             _weaponDuration--;
             if (_weaponDuration <= 0)
@@ -125,8 +133,6 @@ public class Attack : MonoBehaviour
         }
         if (_weaponCooldown <= 0)
         {
-            player.inputs[1] = false;
-            player.inputs[2] = true;
             _weaponHitbox.enabled = true;
             player.CurrentPlayerState = jab ? PlayerStateIdentification.Jab : PlayerStateIdentification.Attack;
             _weaponDuration = 10;

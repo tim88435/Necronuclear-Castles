@@ -198,7 +198,7 @@ public class Player : MonoBehaviour
     {
         if (NetworkManager.IsHost)
         {
-            SendState();//172.27.14.102
+            SendState();
         }
     }
     /// <summary>

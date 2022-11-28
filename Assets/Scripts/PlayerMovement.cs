@@ -62,6 +62,8 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             SendInputs();
+            _player.inputs[1] = false;
+            _player.inputs[2] = false;
         }
     }
     private void JoystickMovement()
