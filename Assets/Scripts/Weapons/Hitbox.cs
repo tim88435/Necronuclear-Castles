@@ -29,8 +29,19 @@ public class Hitbox : MonoBehaviour
             {
                 //send hit message
                 Debug.Log("player hit");
-                script.SendHit(other.GetComponent<Player>());
-                script.DealDamage(other.GetComponent<Player>());
+                Player otherPlayer = other.GetComponent<Player>();
+                script.SendHit(otherPlayer);
+                switch (GetComponentInParent<Player>().CurrentPlayerState)
+                {
+                    case PlayerStateIdentification.Jab:
+                        script.KnockBack(otherPlayer);
+                        break;
+                    case PlayerStateIdentification.Attack:
+                        script.DealDamage(otherPlayer);
+                        break;
+                    default:
+                        break;
+                }
             }
             else
             {
