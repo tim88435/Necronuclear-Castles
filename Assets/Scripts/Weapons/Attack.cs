@@ -93,14 +93,17 @@ public class Attack : MonoBehaviour
     //disables hitbox when time is up, and moves cooldown forward
     private void FixedUpdate()
     {
-        _weaponCooldown -= Time.fixedDeltaTime;
-        _weaponDuration--;
-        if(_weaponDuration <= 0)
+        if (NetworkManager.IsHost)
         {
-            _weaponHitbox.enabled = false;
-            if (player.CurrentPlayerState == PlayerStateIdentification.Attack || player.CurrentPlayerState == PlayerStateIdentification.Jab)
+            _weaponCooldown -= Time.fixedDeltaTime;
+            _weaponDuration--;
+            if (_weaponDuration <= 0)
             {
-                player.CurrentPlayerState = PlayerStateIdentification.Idle;
+                _weaponHitbox.enabled = false;
+                if (player.CurrentPlayerState == PlayerStateIdentification.Attack || player.CurrentPlayerState == PlayerStateIdentification.Jab)
+                {
+                    player.CurrentPlayerState = PlayerStateIdentification.Idle;
+                }
             }
         }
     }
@@ -108,8 +111,22 @@ public class Attack : MonoBehaviour
     //jab bool means if attack is jab or not
     public void Swing(bool jab)
     {
+        if (jab)
+        {
+            player.inputs[2] = true;
+        }
+        else
+        {
+            player.inputs[1] = true;
+        }
+        if (!NetworkManager.IsHost)
+        {
+            return;
+        }
         if (_weaponCooldown <= 0)
         {
+            player.inputs[1] = false;
+            player.inputs[2] = true;
             _weaponHitbox.enabled = true;
             player.CurrentPlayerState = jab ? PlayerStateIdentification.Jab : PlayerStateIdentification.Attack;
             _weaponDuration = 10;
