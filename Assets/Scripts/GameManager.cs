@@ -149,4 +149,16 @@ public class GameManager : MonoBehaviour
         Debug.Log($"No saved weapon called {weapon.weaponName} exists");
         return 0;
     }
+    public IEnumerator EndGame()
+    {
+        if (!NetworkManager.IsHost)
+        {
+            StopCoroutine(EndGame());
+        }
+        while (NetworkManager.Singleton.Server.ClientCount >= 1)
+        {
+            yield return null;
+        }
+        Singleton.ChangeScene(0);
+    }
 }
