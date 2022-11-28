@@ -27,13 +27,13 @@ public class Hitbox : MonoBehaviour
             if(Vector3.Angle(other.transform.position - transform.position, transform.root.forward) < 45)
             {
                 //send hit message
-                //Debug.Log("hit");
+                Debug.Log("player hit");
                 script.SendHit(other.GetComponent<Player>());
             }
-            //else
-            //{
-            //    Debug.Log("miss");
-            //}
+            else
+            {
+                Debug.Log("player miss");
+            }
         }
         //Debug.Log(other.name + Vector3.Angle(other.transform.position - transform.position, transform.root.forward));
     }
