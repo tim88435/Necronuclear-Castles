@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Hitbox : MonoBehaviour
 {
+    [SerializeField] private Attack script;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,12 +27,13 @@ public class Hitbox : MonoBehaviour
             if(Vector3.Angle(other.transform.position - transform.position, transform.root.forward) < 45)
             {
                 //send hit message
-                Debug.Log("hit");
+                //Debug.Log("hit");
+                script.SendHit(other.GetComponent<Player>());
             }
-            else
-            {
-                //Debug.Log("miss");
-            }
+            //else
+            //{
+            //    Debug.Log("miss");
+            //}
         }
         //Debug.Log(other.name + Vector3.Angle(other.transform.position - transform.position, transform.root.forward));
     }

@@ -121,13 +121,12 @@ public class Attack : MonoBehaviour
     /// Send the information to the players (from ther server) that a player has gotten hit by this player
     /// </summary>
     /// <param name="otherPlayer">Player that has gotten hit</param>
-    private void SendHit(Player otherPlayer)
+    public void SendHit(Player otherPlayer)
     {
         Message message = Message.Create(MessageSendMode.Reliable, MessageIdentification.damage);
         message.AddUShort(player.Identification);//player who hit
         message.AddUShort(otherPlayer.Identification);//player who got hit
         message.AddUShort((ushort)player.CurrentPlayerState);//if player is attacking or jabbing
-        message.AddBool(otherPlayer.CurrentPlayerState == PlayerStateIdentification.Block);//if other player is blocking or not
         NetworkManager.Singleton.Server.SendToAll(message);
     }
     /// <summary>
@@ -138,14 +137,16 @@ public class Attack : MonoBehaviour
     {
         //this instance is the attacker that hit the other player
         //player is the other player that just got hit
-        player.health -= _weapon.damage;
+        float blockMult = player.CurrentPlayerState == PlayerStateIdentification.Block ? 0.2f : 1;
+        player.health -= _weapon.damage * blockMult;
     }
 
     //knockbacks other player in direction
     //player is other player
-    public void KnockBack(Player player, float distance)
+    public void KnockBack(Player player)
     {
-        player.transform.Translate(transform.forward * distance);//moves other player in player direction
+        float blockMult = player.CurrentPlayerState == PlayerStateIdentification.Block ? 0.2f : 1;
+        player.transform.Translate(transform.forward * _weapon.damage * blockMult);//moves other player in player direction
     }
     
     [MessageHandler((ushort)MessageIdentification.pickup)]

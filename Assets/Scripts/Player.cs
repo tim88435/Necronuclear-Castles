@@ -211,7 +211,14 @@ public class Player : MonoBehaviour
         {
             if (listOfPlayers.TryGetValue(message.GetUShort(), out Player playerHit))
             {
-                playerAttacked.attackScript.DealDamage(playerHit);
+                if (message.GetUShort() == (ushort)PlayerStateIdentification.Attack) //if player was attacking
+                {
+                    playerAttacked.attackScript.DealDamage(playerHit);
+                }
+                else //assume it was a jab
+                {
+                    playerAttacked.attackScript.KnockBack(playerHit);
+                }
             }
         }
     }
