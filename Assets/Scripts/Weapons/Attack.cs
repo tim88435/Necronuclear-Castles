@@ -165,6 +165,10 @@ public class Attack : MonoBehaviour
         //player is the other player that just got hit
         float blockMult = player.CurrentPlayerState == PlayerStateIdentification.Block ? 0.2f : 1;
         player.health -= _weapon.damage * blockMult;
+        if (player.health <= 0)
+        {
+            player.Kill();
+        }
     }
 
     //knockbacks other player in direction

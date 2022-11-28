@@ -23,12 +23,14 @@ public class Hitbox : MonoBehaviour
         //if sphere hits player and is not current player
         if(other.transform.root.tag == "Player" && other.transform.root != transform.root)
         {
+            Debug.Log($"Hit {other.name}, checking if the angle ({Vector3.Angle(other.transform.position - transform.position, transform.root.forward)})is correct...");
             //if the other player is in front of the current player
-            if(Vector3.Angle(other.transform.position - transform.position, transform.root.forward) < 45)
+            if(Vector3.Angle(other.transform.position - transform.position, transform.root.GetChild(0).forward) < 45)
             {
                 //send hit message
                 Debug.Log("player hit");
                 script.SendHit(other.GetComponent<Player>());
+                script.DealDamage(other.GetComponent<Player>());
             }
             else
             {
