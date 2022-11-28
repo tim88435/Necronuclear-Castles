@@ -43,13 +43,7 @@ public class GameManager : MonoBehaviour
             case 0://Main Menu
                 if (NetworkManager.Singleton != null)
                 {
-                    if (NetworkManager.Singleton.Server != null)
-                    {
-                        if (NetworkManager.Singleton.Server.IsRunning)
-                        {
-                            NetworkManager.Singleton.CloseServer();
-                        }
-                    }
+                    NetworkManager.Singleton.CloseServer();
                     if (NetworkManager.Singleton.Client != null)
                     {
                         if (NetworkManager.Singleton.Client.IsConnected)

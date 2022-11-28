@@ -112,8 +112,14 @@ public class NetworkManager : MonoBehaviour
     /// </summary>
     public void CloseServer()
     {
-        Server.Stop();
         IsHost = false;
+        if (Server != null)
+        {
+            if (Server.IsRunning)
+            {
+                Server.Stop();
+            }
+        }
     }
     public void StartClient()
     {
