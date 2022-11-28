@@ -112,7 +112,15 @@ public class PlayerMovement : MonoBehaviour
     }
     private void SendInputs()
     {
-        Message message = Message.Create(MessageSendMode.Unreliable, MessageIdentification.inputs);
+        Message message;
+        if (_player.inputs[1] || _player.inputs[2])
+        {
+            message = Message.Create(MessageSendMode.Reliable, MessageIdentification.inputs);
+        }
+        else
+        {
+            message = Message.Create(MessageSendMode.Unreliable, MessageIdentification.inputs);
+        }
         message.AddBools(_player.inputs, false);//buttons
         message.AddVector3(TranslationJoystick.input);//joystick 1
         //message.AddVector3(_player.joystick2);//joystick 2
