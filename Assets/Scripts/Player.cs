@@ -231,7 +231,7 @@ public class Player : MonoBehaviour
             Camera.main.GetComponent<DezCamera>().PlayerBody = listOfPlayers.ElementAt(0).Value.transform.GetChild(0);
         }
         GameObject.Destroy(gameObject);
-        if (listOfPlayers.Count <= 0)
+        if (listOfPlayers.Count <= 1)
         {
             UIManager.Singleton.EndGame(listOfPlayers.ContainsKey(Player.Local.Identification));
         }
