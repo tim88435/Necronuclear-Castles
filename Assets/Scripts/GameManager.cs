@@ -1,5 +1,5 @@
 using Riptide;
-using System;
+//using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
                 {
                     if (NetworkManager.Singleton.Server.IsRunning)
                     {
-                        NetworkManager.Singleton.Server.Stop();
+                        NetworkManager.Singleton.CloseServer();
                     }
                     else if (NetworkManager.Singleton.Client.IsConnected)
                     {
@@ -53,6 +53,10 @@ public class GameManager : MonoBehaviour
                     }
                 }
                 CurrentGameState = GameState.MainMenu;
+                //Removes the gameobject with the managers
+                //(there is already one in the main menu scene)
+                Destroy(gameObject);
+                SceneManager.sceneLoaded -= SceneLoaded;
                 SceneManager.LoadScene(0);
                 break;
             case 1://Main Game
