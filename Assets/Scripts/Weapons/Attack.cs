@@ -36,8 +36,6 @@ public class Attack : MonoBehaviour
         }
         _weaponHitbox.radius = weapon.length;
         _weapon = weapon;
-        //MICHAEL STOP USING FIND IT GETS THE SAME GAMEOBJECT TWICE AND SETS THE HOST PLAYER'S WEAPON AS BOTH PLAYER'S WEAPON MODEL
-        //GameObject model = GameObject.Find("Weapon Model");
         weaponModel.GetComponent<MeshFilter>().mesh = weapon.model;
         weaponModel.GetComponent<MeshRenderer>().material = weapon.skin;
     }
